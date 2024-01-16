@@ -7,4 +7,60 @@ canvas {
   display: block;
 }
 
-/* Puedes agregar estilos adicionales según tus preferencias */
+.app-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #4cb5ab
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(100px);
+  animation: fadeInAndMoveUp 3s forwards;
+}
+
+@keyframes fadeInAndMoveUp {
+  0% {
+    opacity: 0;
+    transform: translateY(100px); /* Mueve hacia abajo al inicio */
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* Mueve hacia arriba al final */
+  }
+}
+
+.text {
+  font-family: 'ethnocentric', sans-serif;
+  font-size: 7em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 5px 10px 10px rgb(0, 0, 0, 1);
+}
+
+.small {
+  font-size: 0.8em;
+  margin-right: 5px;
+}
+
+.large {
+  font-size: 1.2em;
+}
