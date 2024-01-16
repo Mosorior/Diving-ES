@@ -1,11 +1,16 @@
 import React from 'react';
-import Earth from '../components/Earth';
 
 const Home = () => {
   return (
     <div>
-      <h1>Welcome to My Dive Website</h1>
-      <Earth />
+      {/* Puedes agregar tu barra de navegación y contenido aquí */}
+      <nav>
+        {/* ... */}
+      </nav>
+      <div>
+        <p>Bienvenido a la nueva ventana</p>
+        {/* Puedes agregar más contenido según sea necesario */}
+      </div>
     </div>
   );
 };

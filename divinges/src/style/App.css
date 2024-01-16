@@ -7,11 +7,11 @@ body {
   position: relative;
   width: 100%;
   height: 100vh;
-  background-color: #000;
+  background-color: #001829;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: aquamarine;
+  color: #4cb5ab;
 }
 
 .overlay {
@@ -35,7 +35,7 @@ body {
     transform: translateY(20px);
   }
   50% {
-    opacity: 1;
+    opacity: 0;
   }
   100% {
     opacity: 1;
@@ -59,4 +59,9 @@ body {
 
 .large {
   font-size: 1.2em;
+}
+
+.link {
+  text-decoration: none; /* Elimina el subrayado del enlace */
+  color: #4cb5ab; /* Establece el color del enlace */
 }
