@@ -19,33 +19,22 @@ const App = () => {
 
 
 const MainPage = () => {
-  const [showText, setShowText] = useState(false); // Cambiado a false para que el texto no se muestre inicialmente
-  const [counter, setCounter] = useState(5); // Inicializa el contador en 5 segundos
+  const [showText, setShowText] = useState(false);
   const navigate = useNavigate();
 
-  const animateAndRedirect = async () => {
-    // Iniciar el contador cuando se hace clic
-    const intervalId = setInterval(() => {
-      setCounter((prevCounter) => prevCounter - 1);
-    }, 1000);
-
-    // Después de 5 segundos, ocultar las letras y redirigir
-    await new Promise((resolve) => setTimeout(resolve, 5000));
-
-    // Limpiar el temporizador al desmontar el componente
-    clearInterval(intervalId);
-
-    // Redirigir después de la animación y espera
-    navigate('/home');
-  };
-
   const handleClick = () => {
-    setShowText(true); // Mostrar las letras al hacer clic
-    animateAndRedirect();
+    // Mostrar las letras al hacer clic
+    setShowText(true);
+
+    // Redirigir después de 4 segundos
+    setTimeout(() => {
+      navigate('/home');
+    }, 4000);
   };
+
 
   const divingES = (
-    <div className={`text overlay ${showText ? 'fade-in-and-move-up' : ''}`}>
+    <div className={`text overlay ${showText ? 'fade-out' : ''}`}>
       <div className='link' onClick={handleClick}>
         <span className="small">Diving</span>
         <span className="large">ES</span>
