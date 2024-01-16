@@ -7,11 +7,12 @@ import Logo from './components/Logo';
 
 const App = () => {
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <Canvas>
+    <div style={{ backgroundColor: '#000', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <Canvas camera={{ position: [0, 0, 2] }}>
         <ambientLight />
         <pointLight position={[10, 10, 10]} />
         <Earth />
+        
       </Canvas>
     </div>
   );
