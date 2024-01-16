@@ -64,4 +64,5 @@ body {
 .link {
   text-decoration: none; /* Elimina el subrayado del enlace */
   color: #4cb5ab; /* Establece el color del enlace */
+  cursor: pointer; /*Establece el cursor como puntero*/
 }
