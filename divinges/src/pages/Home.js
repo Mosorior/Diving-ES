@@ -1,16 +1,19 @@
 import React from 'react';
+import Navbar from '../components/Navbar.jsx';
+import Footer from '../components/Footer';
+import DiveMap from '../components/DiveMap';
+import '../style/DiveMap.css'
 
 const Home = () => {
   return (
-    <div>
-      {/* Puedes agregar tu barra de navegación y contenido aquí */}
-      <nav>
-        {/* ... */}
-      </nav>
-      <div>
-        <p>Bienvenido a la nueva ventana</p>
-        {/* Puedes agregar más contenido según sea necesario */}
+    <div className='contenedor'>
+      <div className='navbar'>
+      <Navbar/>
       </div>
+      <div className='mapa-container'>
+        <DiveMap />
+      </div>
+      <Footer />
     </div>
   );
 };

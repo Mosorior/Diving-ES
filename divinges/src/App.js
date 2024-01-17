@@ -32,7 +32,7 @@ const MainPage = () => {
        // Redirigir después de 4 segundos
       setTimeout(() => {
         navigate('/home');
-      }, 4000);
+      }, 2500);
     }, 2000);
   };
 
@@ -40,8 +40,8 @@ const MainPage = () => {
   const divingES = (
     <div className={`text overlay ${showText ? 'fade-out' : ''}`}>
       <div className='link' onClick={handleClick}>
-        <span className="small">Diving</span>
-        <span className="large">ES</span>
+        <span className="small diving">Diving</span>
+        <span className="large es">ES</span>
       </div>
     </div>
   );

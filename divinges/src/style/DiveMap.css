@@ -1,0 +1,75 @@
+/* Mapa.css */
+.contenedor{
+  background-color: #001829;
+}
+
+.navbar{
+  opacity: 0;
+  transform: translateY(-50px);
+  animation: fadeInFromTop 2s ease-in-out forwards;
+}
+
+@keyframes fadeInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mapa-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #001829;
+    color: white;
+    padding: 20px;
+    min-height: 100vh;
+    opacity: 0;
+    animation: fadeIn 2s ease-in-out forwards;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  .mapa {
+    width: 100%;
+    max-width: 800px; /* Ajusta según tus preferencias */
+  }
+  
+  .dive-spot-info {
+    margin-top: 20px;
+  }
+  
+  .additional-section {
+    margin: 20px;
+  }
+  
+  .additional-section h2 {
+    font-weight: 800;
+    color: #4cb5ab; /* Color similar al proporcionado */
+  }
+  
+  .additional-section p {
+    font-size: larger;
+    text-align: center;
+  }
+  
+  .footer {
+    margin-top: auto;
+    text-align: center;
+    padding: 10px 0;
+    background-color: #001829;
+    color: #4cb5ab;
+  }
+  
