@@ -6,7 +6,7 @@ import { useGLTF } from '@react-three/drei';
 const Earth = ({ setShowText, zoomToLocation }) => {
   const earthRef = useRef();
 
-  const { scene } = useGLTF('/models/RealEarth.glb');
+  const { scene } = useGLTF('/models/MidResEarth.glb');
 
   useFrame(() => {
     if (earthRef.current) {

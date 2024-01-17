@@ -48,7 +48,7 @@ const MainPage = () => {
 
   return (
     <div className="app-container">
-      <Canvas camera={{ position: [0, 0, 2] }}>
+      <Canvas camera={{ position: [0, 0, 1.5] }}>
         <ambientLight />
         <pointLight position={[10, 10, 10]} />
         <Earth setShowText={setShowText} zoomToLocation={zoomToLocation} />
