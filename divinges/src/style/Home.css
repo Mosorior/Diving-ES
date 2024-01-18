@@ -1,0 +1,103 @@
+/* En un archivo CSS separado o en línea en tu componente */
+@font-face{
+  font-family: 'Ethnocentric';
+  src: url('../assets/fonts/ethnocentric.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Gobold';
+  src: url('../assets/fonts/Gobold.otf') format('opentype');
+}
+
+.navbar {
+  opacity: 0;
+  transform: translateY(-50px);
+  animation: fadeInFromTop 2s ease-in-out forwards;
+}
+
+@keyframes fadeInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+body{
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  background-color: #001829;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.home-container {
+  position: relative;
+  text-align: center;
+  height: 100vh;
+  overflow: auto;
+  }
+  
+
+  .home-image {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    z-index: 0;
+    filter: brightness(70%);
+  }
+  @media (min-width: 768px) {
+    .home-image {
+      height: 60vh;
+    }
+  }
+
+
+  
+  .home-title {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 10vmin;
+    font-family: 'Ethnocentric';
+    background: -webkit-linear-gradient(35deg, #69ecdf, #31828b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #4cb5ab;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .home-title b{
+    font-size: 12vmin;
+  }
+  
+  .home-subtitle {
+    font-size: 50px;
+    padding-top: 30px;
+    margin: 20px 0;
+    font-family: 'Gobold';
+  }
+  
+  .home-paragraph {
+    font-size: 25px;
+    margin: 10px 0;
+    padding-bottom: 30px;
+  }
+  .footer {
+    margin-top: auto;
+    text-align: center;
+    padding: 20px;
+    background-color: #001F3F;
+    color: white;
+  }
+  

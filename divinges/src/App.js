@@ -4,7 +4,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import Earth from './components/Earth';
-import Home from './pages/Home';
+import Home from './pages/Home.jsx';
 
 const App = () => {
   return (

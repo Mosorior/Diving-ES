@@ -2,7 +2,7 @@
 import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet'; // Importa la biblioteca de íconos Leaflet
-import data from './data';
+import data from '../data';
 import '../style/DiveMap.css'
 
 // Importa una imagen para el ícono del marcador (ajústala según tus necesidades)

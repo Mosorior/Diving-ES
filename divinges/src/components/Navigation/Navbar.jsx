@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import '../style/Navbar.css'
+import '../../style/Navbar.css'
 import BurgerButton from './BurgerButton';
 import {Link, useNavigate} from 'react-router-dom';
 
@@ -15,6 +15,9 @@ function Navbar() {
 
     const handleLinkClick = (path) => {
             setClicked(false);
+            if (window.innerWidth <= 768) {
+                setHovered(false);
+            }
             navigate(path);
     }
     return(
@@ -53,6 +56,20 @@ function Navbar() {
 export default Navbar
 
 const NavContainer = styled.nav`
+    position: initial;
+    top: 0;
+    width: 100%;
+    padding: 0.4rem;
+    background-color: #001f3f;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 5;
+
+    @media (min-width: 768px) {
+        position: initial;
+      }
+
     ul{
         list-style-type: none;
         margin: 0;
@@ -80,11 +97,6 @@ const NavContainer = styled.nav`
         }
         color: #4CB5AB;
     }
-    padding: .4rem;
-    background-color: #001F3F;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 
     a{
         color: #4CB5AB;

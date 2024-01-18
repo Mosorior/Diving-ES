@@ -1,0 +1,41 @@
+/* En tu archivo ImageSlider.css */
+
+.image-slider {
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .slide-container {
+    position: relative;
+  }
+  
+  .image-wrapper {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .slide-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    z-index: 1;
+  }
+  
+  .text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%; /* Ajusta según sea necesario */
+    z-index: 2;
+  }
+  
+  .slide-text {
+    font-size: 30px; /* Ajusta según sea necesario */
+    color: white;
+    text-align: center;
+  }
+  

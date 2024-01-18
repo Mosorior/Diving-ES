@@ -1,0 +1,15 @@
+/* src/styles/MapComponent.css */
+
+.leaflet-container{
+    position: relative; /* Esto permite controlar la posición del mapa dentro del contenedor */
+    width: 100vw; /* Ancho del contenedor, puedes ajustarlo según tus necesidades */
+    height: 580px; /* Altura del contenedor, puedes ajustarlo según tus necesidades */
+    margin: 0 auto; /* Centrar el contenedor horizontalmente en la página */
+    z-index: 0;
+    box-shadow: 0px 0px 20px #616161;
+    /* Otros estilos personalizados según tus preferencias */
+  }
+  .dive-spot-info{
+    margin-top: 30px;
+  }
+  
