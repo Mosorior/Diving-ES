@@ -60,6 +60,12 @@ body{
     }
   }
 
+  @media (max-width: 768px) {
+    .navbar{
+      position: fixed;
+      z-index: 100;
+    }
+  }
 
   
   .home-title {
