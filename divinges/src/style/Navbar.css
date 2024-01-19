@@ -21,7 +21,7 @@ li {
     display: inline;
     margin-right: 5px;
 }
-h2{
+.Logo{
     margin-left: 20px;
     margin-right: 10px;
     font-weight: 400;
@@ -29,6 +29,7 @@ h2{
     font-size: 30px;
     background: -webkit-linear-gradient(35deg, #69ecdf, #31828b);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     color: #4cb5ab;
     z-index: 4;

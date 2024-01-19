@@ -23,7 +23,7 @@ function Navbar() {
     return(
         <>
             <NavContainer>
-                <h2 onMouseEnter={() => setHovered(true)}
+                <h2 className='Logo' onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)} onClick={() => handleLinkClick('/')} style={{ cursor: hovered ? 'pointer' : 'default' }}>Diving<b>ES</b></h2>
                 <nav className={`links ${clicked ? 'active' : ''}`}>
                     <ul>

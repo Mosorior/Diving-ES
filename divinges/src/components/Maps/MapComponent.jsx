@@ -1,7 +1,20 @@
 // MapComponent.jsx
 import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import '../styles/MapComponent.css';
+import L from 'leaflet'; // Importa la biblioteca de íconos Leaflet
+import 'leaflet/dist/leaflet.css';
+import '../../style/MapComponent.css';
+
+// Importa una imagen para el ícono del marcador (ajústala según tus necesidades)
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+
+// Crea un ícono personalizado con Leaflet
+const customIcon = new L.Icon({
+  iconUrl: markerIcon,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+});
 
 function MapComponent({ diveSpots, onMarkerClick, showDetails, toggleDetails }) {
   return (
@@ -16,6 +29,7 @@ function MapComponent({ diveSpots, onMarkerClick, showDetails, toggleDetails }) 
             key={diveSpot.id}
             position={[diveSpot.lat, diveSpot.lng]}
             onClick={() => onMarkerClick(diveSpot)}
+            icon={customIcon} // Utiliza el ícono personalizado
           >
             <Popup>
               <div>

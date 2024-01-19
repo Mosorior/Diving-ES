@@ -1,8 +1,9 @@
 // Mapa.jsx
 import React, { useState } from 'react';
-import MapComponent from '../components/MapComponent';
-import diveSpots from '../data';
-import '../styles/Mapa.css';
+import MapComponent from '../components/Maps/MapComponent';
+import diveSpots from '../components/data';
+import Navbar from '../components/Navigation/Navbar';
+import '../style/Mapa.css';
 
 function Mapa() {
   const [selectedDiveSpot, setSelectedDiveSpot] = useState(null);
@@ -18,6 +19,8 @@ function Mapa() {
   };
 
   return (
+    <div>
+      <Navbar />
     <div className="mapa-container">
       <div className="mapa">
         <MapComponent diveSpots={diveSpots} onMarkerClick={handleMarkerClick} showDetails={showDetails} toggleDetails={toggleDetails} />
@@ -52,6 +55,7 @@ function Mapa() {
       <footer className="footer">
         &copy; {new Date().getFullYear()} DivingES. Todos los derechos reservados.
       </footer>
+    </div>
     </div>
   );
 }

@@ -1,10 +1,11 @@
 import './style/App.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import Earth from './components/Earth';
 import Home from './pages/Home.jsx';
+import Mapa from './pages/Mapa.jsx';
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/mapa" element={<Mapa />} />
       </Routes>
     </Router>
   );
