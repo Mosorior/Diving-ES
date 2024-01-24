@@ -28,7 +28,6 @@
 }
 
 body{
-  overflow: hidden;
   margin: 0;
   padding: 0;
   background-color: #001829;
@@ -41,7 +40,8 @@ body{
   position: relative;
   text-align: center;
   height: 100vh;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   }
   
 

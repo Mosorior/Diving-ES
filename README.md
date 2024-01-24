@@ -1,5 +1,3 @@
-# DivingES
-
 ## Introducción
 DivingES es un proyecto que busca crear una plataforma web dedicada al buceo en España. La finalidad principal es proporcionar a los buceadores una herramienta completa que les permita explorar localizaciones, obtener información detallada sobre inmersiones, acceder a herramientas útiles y participar en una comunidad a través de un blog/foro.
 

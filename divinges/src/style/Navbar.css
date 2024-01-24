@@ -96,6 +96,7 @@ a{
 }
 .burger{
     z-index: 4;
+    margin-right: 20px;
     @media(min-width: 768px){
         display: none;
     }
@@ -105,7 +106,6 @@ a{
     z-index: 5;
     opacity: 0;
     transform: translateY(-50px);
-    animation: fadeInFromTop 2s ease-in-out forwards;
   }
   
   /* Agrega un nuevo estilo para el recuadro con enlaces */
