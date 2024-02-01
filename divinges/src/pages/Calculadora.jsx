@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Navbar from '../components/Navigation/Navbar';
+import '../style/Calculadora.css';
 
 const Calculadora = () => {
     const [profundidad, setProfundidad] = useState(0);
