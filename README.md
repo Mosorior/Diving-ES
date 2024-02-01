@@ -28,4 +28,4 @@ El propósito es facilitar la planificación y exploración de inmersiones en Es
 
 **Total estimado:** 40 horas.
 
-Con esta planificación, se busca optimizar el tiempo de desarrollo mientras se cumplen los objetivos del proyecto DivingES. Las horas son aproximadas y podrían ajustarse durante el proceso de desarrollo.
+Las horas son aproximadas y podrían ajustarse durante el proceso de desarrollo.
