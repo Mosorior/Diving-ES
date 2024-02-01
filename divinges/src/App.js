@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-route
 import Earth from './components/Earth';
 import Home from './pages/Home.jsx';
 import Mapa from './pages/Mapa.jsx';
+import Calculadora from './pages/Calculadora.jsx';
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="/" element={<MainPage />} />
         <Route path="/home" element={<Home />} />
         <Route path="/mapa" element={<Mapa />} />
+        <Route path="/calculadora" element={<Calculadora />} />
       </Routes>
     </Router>
   );

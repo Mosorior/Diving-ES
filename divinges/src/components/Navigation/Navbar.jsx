@@ -70,7 +70,7 @@ function Navbar() {
               <Link to="/informacion">Información</Link>
             </li>
             <li>
-              <Link to="/">Calculadora</Link>
+              <Link to="/calculadora">Calculadora</Link>
             </li>
             <li>
               <Link to="/">Blog</Link>
