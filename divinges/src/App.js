@@ -7,6 +7,7 @@ import Earth from './components/Earth';
 import Home from './pages/Home.jsx';
 import Mapa from './pages/Mapa.jsx';
 import Calculadora from './pages/Calculadora.jsx';
+import Foro from './pages/Foro.jsx';
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/mapa" element={<Mapa />} />
         <Route path="/calculadora" element={<Calculadora />} />
+        <Route path="/foro" element={<Foro />} />
       </Routes>
     </Router>
   );
