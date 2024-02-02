@@ -73,7 +73,7 @@ function Navbar() {
               <Link to="/calculadora">Calculadora</Link>
             </li>
             <li>
-              <Link to="/">Blog</Link>
+              <Link to="/foro">Foro</Link>
             </li>
           </ul>
         </nav>
