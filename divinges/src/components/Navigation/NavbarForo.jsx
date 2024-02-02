@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import LoginForm from '../LoginForm';
+import RegisterForm from '../RegisterForm'; // Asegúrate de crear este componente
 
 const NavbarForo = () => {
-
     const [showLoginModal, setShowLoginModal] = useState(false);
+    const [showRegisterModal, setShowRegisterModal] = useState(false);
 
     const openLoginModal = () => setShowLoginModal(true);
     const closeLoginModal = () => setShowLoginModal(false);
+
+    const openRegisterModal = () => setShowRegisterModal(true);
+    const closeRegisterModal = () => setShowRegisterModal(false);
 
     return (
         <nav className="navbar-foro">
@@ -17,8 +21,12 @@ const NavbarForo = () => {
                 <li><NavLink to="/foro/sitios" activeClassName="active">Sitios de Buceo</NavLink></li>
                 <li><NavLink to="/foro/conservacion" activeClassName="active">Conservación Marina</NavLink></li>
             </ul>
-            <button onClick={openLoginModal}>Iniciar Sesión</button>
+            <div className="auth-buttons">
+                <button onClick={openLoginModal}>Iniciar Sesión</button>
+                <button onClick={openRegisterModal}>Registrarse</button>
+            </div>
             {showLoginModal && <LoginForm onClose={closeLoginModal} />}
+            {showRegisterModal && <RegisterForm onClose={closeRegisterModal} />}
         </nav>
     );
 };

@@ -1,19 +1,29 @@
 import React, { useState } from 'react';
+import axios from 'axios'; 
 
 const LoginForm = ({ onClose }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState(''); // Estado para manejar errores de inicio de sesión
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // Aquí pondrías tu lógica de autenticación
-        // Por ejemplo, llamar a una función login(email, password)
         try {
-            await login(email, password);
+            // Suponiendo que tienes un endpoint /api/auth/login en tu servidor
+            const response = await axios.post('/api/auth/login', { email, password });
+            const { token } = response.data;
+            // Aquí deberías hacer algo con el token, por ejemplo, guardarlo en localStorage
+            localStorage.setItem('token', token);
             onClose(); // Cerrar el modal si el inicio de sesión es exitoso
         } catch (error) {
-            console.error("Error de inicio de sesión:", error);
-            // Manejar errores de inicio de sesión aquí (e.g., mostrar un mensaje)
+            if (error.response && error.response.data) {
+                // Manejar errores específicos devueltos por el servidor
+                setError(error.response.data.mensaje);
+            } else {
+                console.error("Error de inicio de sesión:", error);
+                setError("Error al iniciar sesión. Por favor, inténtalo de nuevo.");
+            }
         }
     };
 
