@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // Asegúrate de haber instalado axios
+import axios from 'axios';
+import '../style/ModalBase.css';
 
-const RegisterForm = () => {
+const RegisterForm = ({ onClose, toggleModal }) => {
     const [formData, setFormData] = useState({
         username: '',
         email: '',
         password: '',
     });
-    const [message, setMessage] = useState('');
+    const [error, setError] = useState(''); // Añadido para manejar los mensajes de error
 
     const { username, email, password } = formData;
 
@@ -25,28 +26,26 @@ const RegisterForm = () => {
             const body = JSON.stringify({ username, email, password });
 
             const response = await axios.post('http://localhost:5000/api/auth/registro', body, config);
-
             // Asegúrate de que estás accediendo a response.data correctamente
             if (response.data) {
                 console.log(response.data); // Maneja la respuesta adecuadamente
-                setMessage('Registro exitoso. Por favor, inicie sesión.');
+                onClose(); // Cierra el modal después del registro exitoso
             }
         } catch (error) {
-            // Manejo adecuado de errores
             if (error.response && error.response.data) {
                 console.error(error.response.data);
-                setMessage(error.response.data.mensaje || 'Error al registrar. Por favor, intente nuevamente.');
+                setError(error.response.data.message || 'Error al registrar. Por favor, intente nuevamente.');
             } else {
                 console.error(error.message);
-                setMessage('Error al registrar. Por favor, intente nuevamente.');
+                setError('Error al registrar. Por favor, intente nuevamente.');
             }
         }
     };
 
     return (
-        <div>
+        <div className="register-modal">
+            {error && <p className="error">{error}</p>}
             <h2>Registrar Nuevo Usuario</h2>
-            {message && <p>{message}</p>}
             <form onSubmit={onSubmit}>
                 <div>
                     <label htmlFor="username">Nombre de Usuario:</label>
@@ -81,7 +80,14 @@ const RegisterForm = () => {
                         required
                     />
                 </div>
-                <button type="submit">Registrar</button>
+                <div className="form-actions">
+                    <button type="submit">Registrar</button>
+                    <button type="button" onClick={onClose}>Cerrar</button>
+                </div>
+                <div className="alternate-action">
+                    <span>¿Ya estás registrado? </span>
+                    <button type="button" onClick={() => toggleModal('login')}>Iniciar Sesión</button>
+                </div>
             </form>
         </div>
     );

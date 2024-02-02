@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import axios from 'axios'; 
+import axios from 'axios';
+import '../style/ModalBase.css';
 
-const LoginForm = ({ onClose }) => {
+const LoginForm = ({ onClose, toggleModal }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(''); // Estado para manejar errores de inicio de sesión
-
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -29,6 +29,7 @@ const LoginForm = ({ onClose }) => {
 
     return (
         <div className="login-modal">
+            {error && <p className="error">{error}</p>}
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="email">Correo Electrónico:</label>
@@ -52,7 +53,11 @@ const LoginForm = ({ onClose }) => {
                 </div>
                 <div className="form-actions">
                     <button type="submit">Iniciar Sesión</button>
-                    <button type="button" onClick={onClose}>Cancelar</button>
+                    <button type="button" onClick={onClose}>Cerrar</button>
+                </div>
+                <div className="alternate-action">
+                    <span>¿No estás registrado? </span>
+                    <button type="button" onClick={() => toggleModal('register')}>Registrarse</button>
                 </div>
             </form>
         </div>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import LoginForm from '../LoginForm';
 import RegisterForm from '../RegisterForm'; // Asegúrate de crear este componente
+import '../../style/NavbarForo.css'
 
 const NavbarForo = () => {
     const [showLoginModal, setShowLoginModal] = useState(false);

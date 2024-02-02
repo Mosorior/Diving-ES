@@ -1,0 +1,53 @@
+/* NavbarForo.css */
+@font-face {
+    font-family: 'Gobold';
+    src: url('../assets/fonts/Gobold.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Ethnocentric';
+    src: url('../assets/fonts/ethnocentric.otf') format('opentype');
+}
+
+.navbar-foro {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #013567; /* Fondo oscuro para modo oscuro */
+    color: white; /* Texto blanco para contraste */
+    padding: 0 20px; /* Ajusta el espaciado a tu gusto */
+}
+
+.navbar-foro ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-foro li {
+    margin: 0 10px;
+}
+
+.navbar-foro a {
+    color: white;
+    text-decoration: none;
+    font-family: 'Gobold';
+}
+
+.navbar-foro .auth-buttons button {
+    background-color: #4CB5AB;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-family: 'Gobold';
+}
+
+.navbar-foro .auth-buttons button:hover {
+    background-color: #31828b;
+}
+
+/* Estilos adicionales para la respuesta y transiciones si es necesario */

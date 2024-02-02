@@ -1,0 +1,70 @@
+/* Foro.css */
+.foro-container {
+    background-color: #002244; /* Un azul oscuro como fondo */
+    color: white; /* Texto en blanco para contraste */
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px auto;
+    width: 100%;
+    text-align: center;
+}
+
+.foro-container h2 {
+    margin: 0 auto; /* Centra el título horizontalmente */
+    padding: 20px; /* Agrega un poco de espacio */
+    background-color: #013567; /* O el color que prefieras */
+    color: white; /* Texto en blanco para contraste */
+}
+
+.navbar-foro {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.navbar-foro ul {
+    list-style: none;
+    padding: 0;
+}
+
+.navbar-foro ul li {
+    display: inline;
+    margin-right: 10px;
+}
+
+.navbar-foro ul li a {
+    color: #69ecdf; /* Un color azul claro para los enlaces */
+    text-decoration: none;
+}
+
+.navbar-foro ul li a.active {
+    text-decoration: underline;
+}
+
+.navbar-foro .auth-buttons button {
+    background-color: #4cb5ab;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.navbar-foro .auth-buttons button:hover {
+    background-color: #31828b;
+}
+
+.posts-list .post {
+    background-color: #013567; /* Un tono de azul más claro para los posts */
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.posts-list .post h3 {
+    margin-top: 0;
+}
+
+.posts-list .post p {
+    margin-bottom: 5px;
+}

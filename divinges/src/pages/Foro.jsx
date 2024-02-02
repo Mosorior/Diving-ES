@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import NavbarForo from '../components/Navigation/NavbarForo';
 import Navbar from '../components/Navigation/Navbar'; // Asegúrate de que la ruta sea correcta
+import '../style/Foro.css';
 
 const Foro = () => {
     const [posts, setPosts] = useState([]); // Estado para almacenar los posts del foro
