@@ -16,17 +16,16 @@ const RegisterForm = ({ onClose, toggleModal }) => {
         e.preventDefault();
 
         try {
-            const body = JSON.stringify(formData);
-            const config = {
+            const response = await axios.post('http://localhost:5000/api/auth/registro', formData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-            };
-            const response = await axios.post('http://localhost:5000/api/auth/registro', body, config);
+            });
             console.log(response.data);
             onClose();
         } catch (error) {
-            setError('Error al registrar. Por favor, intente nuevamente.');
+            console.error("Error completo:", error);
+            setError(error.response ? error.response.data.message : 'Error al registrar. Por favor, intente nuevamente.');
         }
     };
 

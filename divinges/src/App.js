@@ -4,6 +4,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import Earth from './components/Earth';
+import { AuthProvider } from './components/AuthContext.js';
 import Home from './pages/Home.jsx';
 import Mapa from './pages/Mapa.jsx';
 import Calculadora from './pages/Calculadora.jsx';
@@ -11,6 +12,7 @@ import Foro from './pages/Foro.jsx';
 
 const App = () => {
   return (
+    <AuthProvider>
     <Router>
       <Routes>
         <Route path="/" element={<MainPage />} />
@@ -20,6 +22,7 @@ const App = () => {
         <Route path="/foro" element={<Foro />} />
       </Routes>
     </Router>
+    </AuthProvider>
   );
 };
 
