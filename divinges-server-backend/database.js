@@ -14,6 +14,7 @@ const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CR
             email TEXT NOT NULL UNIQUE,
             passwordHash TEXT NOT NULL,
             rol TEXT DEFAULT 'usuario'
+            imagenPerfil TEXT DEFAULT ''
         )`, (err) => {
             if (err) console.error('Error al crear la tabla usuarios', err.message);
             else console.log("Tabla 'usuarios' creada correctamente.");

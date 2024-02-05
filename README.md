@@ -17,6 +17,10 @@ El propósito es facilitar la planificación y exploración de inmersiones en Es
   - React (framework para la página web).
   - ThreeJS (para elementos visuales 3D).
   - Leaflet (para visualizar mapas).
+  - Bcrypt (para encriptar contraseñas)
+  - Express (como servidor para almacenar datos)
+  - Multer (para carga de archivos)
+  - SQLite3 (para base de da)
 
 ## Planificación
 1. **Investigación y Diseño de la Página Web:** 6 horas.
