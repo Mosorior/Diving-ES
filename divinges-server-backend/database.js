@@ -2,6 +2,8 @@ const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcrypt');
 const path = require('path');
 const dbPath = path.resolve(__dirname, 'foroBuceo.db');
+const defaultProfileImagePath = path.join('img', 'img.webp');
+
 
 const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
     if (err) {
@@ -14,7 +16,7 @@ const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CR
             email TEXT NOT NULL UNIQUE,
             passwordHash TEXT NOT NULL,
             rol TEXT DEFAULT 'usuario'
-            imagenPerfil TEXT DEFAULT ''
+            imagenPerfil TEXT DEFAULT '${defaultProfileImagePath}'
         )`, (err) => {
             if (err) console.error('Error al crear la tabla usuarios', err.message);
             else console.log("Tabla 'usuarios' creada correctamente.");
