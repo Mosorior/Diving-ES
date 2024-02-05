@@ -1,19 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
-import LoginForm from '../LoginForm';
-import RegisterForm from '../RegisterForm'; // Asegúrate de crear este componente
 import '../../style/NavbarForo.css'
 
-const NavbarForo = () => {
-    const [showLoginModal, setShowLoginModal] = useState(false);
-    const [showRegisterModal, setShowRegisterModal] = useState(false);
-
-    const openLoginModal = () => setShowLoginModal(true);
-    const closeLoginModal = () => setShowLoginModal(false);
-
-    const openRegisterModal = () => setShowRegisterModal(true);
-    const closeRegisterModal = () => setShowRegisterModal(false);
-
+const NavbarForo = ({ openLoginModal, openRegisterModal }) => {
     return (
         <nav className="navbar-foro">
             <ul>
@@ -26,8 +15,6 @@ const NavbarForo = () => {
                 <button onClick={openLoginModal}>Iniciar Sesión</button>
                 <button onClick={openRegisterModal}>Registrarse</button>
             </div>
-            {showLoginModal && <LoginForm onClose={closeLoginModal} />}
-            {showRegisterModal && <RegisterForm onClose={closeRegisterModal} />}
         </nav>
     );
 };
