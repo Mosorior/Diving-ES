@@ -115,7 +115,7 @@ app.post('/login', (req, res) => {
             if (result) {
                 // Construye la ruta de la imagen de perfil basada en el nombre de usuario
                 // Ajusta esta ruta según cómo estés almacenando las imágenes
-                const profileImagePath = `/uploads/${username}/profile-img/profile.jpg`;
+                const profileImagePath = `/uploads/${username}/profile-img/profile.jpeg`;
 
                 const token = jwt.sign(
                     { userId: user.id, username: user.username, profileImagePath },

@@ -1,10 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { useAuth } from '../AuthContext';
+import { useAuth } from '../AuthContext'; // Asegúrate de que la ruta sea correcta
 import '../../style/NavbarForo.css';
 
 const NavbarForo = ({ openLoginModal }) => {
-    const { user, logout } = useAuth();
+    const { user, logout } = useAuth(); // Extracción correcta de user y logout del contexto
 
     return (
         <nav className="navbar-foro">
@@ -24,8 +24,8 @@ const NavbarForo = ({ openLoginModal }) => {
             </ul>
             {user ? (
                 <div className="user-profile">
-                    {/* Utiliza directamente la URL proporcionada por el contexto de autenticación */}
-                    <img src={user.profileImagePath} alt="Perfil" className="profile-image" />
+                    {/* Asegúrate de que la ruta de la imagen sea correcta y coincida con cómo se almacena en el servidor */}
+                    <img src={`http://localhost:3001/uploads/${user.username}/profile-img/profile.jpeg`} alt="Perfil" className="profile-image" />
                     <button onClick={logout}>Cerrar Sesión</button>
                 </div>
             ) : (

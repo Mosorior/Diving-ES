@@ -24,10 +24,6 @@ export const AuthProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        // Este efecto ya maneja la carga inicial del estado de autenticación basado en el token existente
-    }, []);
-
     const login = async (loginData) => {
         setIsLoading(true);
         setError(null);
@@ -47,13 +43,11 @@ export const AuthProvider = ({ children }) => {
 
             const { token, ...userData } = await response.json();
             localStorage.setItem('token', token);
-            // Aquí decodificamos el token para extraer la información del usuario si es necesario
-            // O asumimos que userData ya contiene toda la información necesaria
             setUser({
                 isLoggedIn: true,
                 token,
-                ...jwtDecode(token), // Decodifica el token para obtener información del usuario
-                ...userData, // Usa directamente los datos del usuario si el token no incluye toda la info necesaria
+                ...jwtDecode(token),
+                ...userData,
             });
         } catch (error) {
             setError(error.message);

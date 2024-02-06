@@ -15,7 +15,8 @@
     align-items: center;
     background-color: #013567; /* Fondo oscuro para modo oscuro */
     color: white; /* Texto blanco para contraste */
-    padding: 0 20px; /* Ajusta el espaciado a tu gusto */
+    padding: 0 30px; /* Ajusta el espaciado a tu gusto */
+    height: 50px;
 }
 
 .navbar-foro ul {
@@ -49,5 +50,11 @@
 .navbar-foro .auth-buttons button:hover {
     background-color: #31828b;
 }
+
+.profile-image {
+    width: 50px; /* o puedes usar max-width si prefieres */
+    height: auto; /* mantiene la proporción de la imagen */
+    border-radius: 50%; /* Opcional: crea un efecto de imagen circular */
+  }
 
 /* Estilos adicionales para la respuesta y transiciones si es necesario */
