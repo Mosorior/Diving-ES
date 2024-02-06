@@ -11,7 +11,7 @@ const LoginForm = ({ onClose, toggleModal }) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await fetch('http://localhost:5000/api/auth/login', {
+            const response = await fetch('http://localhost:3001/login', { // Ajuste de la URL al endpoint correcto
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -20,20 +20,18 @@ const LoginForm = ({ onClose, toggleModal }) => {
             });
     
             if (!response.ok) {
-                throw new Error('Error al iniciar sesión');
+                const errorData = await response.json(); // Obtiene el mensaje de error del servidor
+                throw new Error(errorData.message || 'Error al iniciar sesión'); // Usa el mensaje de error del servidor si está disponible
             }
     
             const data = await response.json();
             localStorage.setItem('token', data.token);
-            await login(data.usuario);
+            // Asegúrate de que la función login en tu AuthContext maneje adecuadamente los datos del usuario
+            await login(data.user || data); // Ajusta según la estructura de tu respuesta
 
-            // Recarga la página para reflejar el cambio de estado de autenticación
-            window.location.reload();
-    
-            // Aquí puedes redirigir a otra página o forzar una recarga de la página actual
-            onClose();
+            onClose(); // Cierra el modal después de un inicio de sesión exitoso
         } catch (error) {
-            setError("Error al iniciar sesión. Por favor, inténtalo de nuevo.");
+            setError(error.message); // Muestra el mensaje de error obtenido
         }
     };
 
@@ -44,12 +42,12 @@ const LoginForm = ({ onClose, toggleModal }) => {
                 <h2>Iniciar Sesión</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label htmlFor="username">Nombre de Usuario:</label> {/* Cambiado de Correo Electrónico a Nombre de Usuario */}
+                        <label htmlFor="username">Nombre de Usuario:</label>
                         <input
-                            type="text" // Cambiado de email a text
-                            id="username" // Cambiado de email a username
+                            type="text"
+                            id="username"
                             value={username}
-                            onChange={(e) => setUsername(e.target.value)} // Cambiado setEmail a setUsername
+                            onChange={(e) => setUsername(e.target.value)}
                             required
                         />
                     </div>
@@ -68,7 +66,7 @@ const LoginForm = ({ onClose, toggleModal }) => {
                         <button type="button" onClick={onClose}>Cerrar</button>
                     </div>
                     <div className="alternate-action">
-                        <span>¿No estás registrado? </span>
+                        <span>¿No estás registrado?</span>
                         <button type="button" onClick={() => toggleModal('register')}>Registrarse</button>
                     </div>
                 </form>

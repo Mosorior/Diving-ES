@@ -15,7 +15,7 @@ const RegisterForm = ({ onClose, toggleModal }) => {
         e.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:5000/api/auth/registro', {
+            const response = await fetch('http://localhost:3001/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -24,17 +24,19 @@ const RegisterForm = ({ onClose, toggleModal }) => {
             });
 
             if (!response.ok) {
-                // Si el servidor responde con un código de error HTTP,
-                // lanza un error para entrar al bloque catch
-                throw new Error('Error al registrar');
+                const errorData = await response.json(); // Intenta parsear el error como JSON
+                throw new Error(errorData.message || 'Error al registrar. Por favor, intente nuevamente.');
             }
 
-            const data = await response.json();
-            console.log(data);
-            onClose();
+            // La respuesta es exitosa, puedes optar por mostrar un mensaje de éxito
+            // o realizar otras acciones como iniciar sesión automáticamente.
+            const data = await response.json(); // Parsea la respuesta exitosa como JSON
+            console.log('Registro exitoso:', data);
+            // Aquí puedes redirigir al usuario o cerrar el modal de registro y mostrar un mensaje de éxito
+            onClose(); // Cierra el modal después de un registro exitoso
         } catch (error) {
-            console.error("Error completo:", error);
-            setError('Error al registrar. Por favor, intente nuevamente.');
+            console.error("Error durante el registro:", error);
+            setError(error.message); // Actualiza el estado de error con el mensaje de error
         }
     };
 

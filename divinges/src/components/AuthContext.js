@@ -1,32 +1,39 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import  { jwtDecode } from 'jwt-decode'; // Corrección aquí
+import { jwtDecode } from 'jwt-decode'; // Asegúrate de que la importación sea correcta
 
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(() => {
-        // Verifica si ya existe un token al cargar el componente
-        const token = localStorage.getItem('token');
-        if (token) {
-            const decoded = jwtDecode(token);
-            return { isLoggedIn: true, token, ...decoded };
-        }
-        return null;
-    });
-    const [isLoading, setIsLoading] = useState(false);
+    const [user, setUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(true); // Cambio inicial a true para reflejar la carga inicial
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        // No es necesario volver a verificar el token aquí, se hace en el useState inicial
+        // Verifica si ya existe un token al cargar el componente
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const decoded = jwtDecode(token);
+                setUser({
+                    isLoggedIn: true,
+                    token,
+                    ...decoded
+                });
+            } catch (error) {
+                console.error('Error decoding token: ', error);
+                localStorage.removeItem('token'); // Remueve el token si no es válido
+            }
+        }
+        setIsLoading(false); // Establece isLoading a false después de intentar cargar el usuario
     }, []);
 
     const login = async (loginData) => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await fetch('http://localhost:5000/api/auth/login', {
+            const response = await fetch('http://localhost:3001/login', { // Asegúrate de ajustar la URL al endpoint correcto
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -36,15 +43,20 @@ export const AuthProvider = ({ children }) => {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.mensaje || 'Error al iniciar sesión. Por favor, intente nuevamente.');
+                throw new Error(errorData.message || 'Error al iniciar sesión. Por favor, intente nuevamente.');
             }
 
             const data = await response.json();
             localStorage.setItem('token', data.token);
-            setUser({ isLoggedIn: true, token: data.token, ...data.usuario });
-            setIsLoading(false);
+            const decoded = jwtDecode(data.token);
+            setUser({
+                isLoggedIn: true,
+                token: data.token,
+                ...decoded
+            });
         } catch (error) {
             setError(error.message);
+        } finally {
             setIsLoading(false);
         }
     };
