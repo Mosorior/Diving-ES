@@ -8,6 +8,7 @@ const bcrypt = require('bcryptjs');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
+const sharp = require('sharp');
 const app = express();
 const saltRounds = 10;
 
@@ -56,6 +57,7 @@ db.serialize(() => {
 // Endpoint para registrar un nuevo usuario
 app.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
+
     const userExistsQuery = 'SELECT * FROM users WHERE username = ? OR email = ?';
     db.get(userExistsQuery, [username, email], (err, row) => {
         if (err) {
@@ -65,20 +67,37 @@ app.post('/register', async (req, res) => {
             return res.status(409).send('El usuario o correo electrónico ya está registrado');
         }
 
-        bcrypt.hash(password, saltRounds, (err, hash) => {
+        bcrypt.hash(password, saltRounds, async (err, hash) => {
             if (err) {
                 return res.status(500).send('Error al encriptar la contraseña');
             }
-            const insertUserQuery = 'INSERT INTO users (username, email, password) VALUES (?, ?, ?)';
-            db.run(insertUserQuery, [username, email, hash], function(err) {
-                if (err) {
-                    return res.status(500).send('Error al registrar el usuario');
-                }
-                res.status(200).send({ userId: this.lastID });
-            });
+
+            const defaultImagePath = path.join(__dirname, 'default', 'img.png'); // Asegúrate de que este es el archivo correcto
+            const userImageDir = path.join(__dirname, 'uploads', username, 'profile-img');
+            const userImagePath = path.join(userImageDir, 'profile.jpeg'); // Cambiando a formato .jpeg
+
+            createFolder(userImageDir);
+
+            try {
+                await sharp(defaultImagePath)
+                    .jpeg({ quality: 80 }) // Convierte a JPEG con calidad del 80%
+                    .toFile(userImagePath);
+
+                const insertUserQuery = 'INSERT INTO users (username, email, password) VALUES (?, ?, ?)';
+                db.run(insertUserQuery, [username, email, hash], function(err) {
+                    if (err) {
+                        return res.status(500).send('Error al registrar el usuario');
+                    }
+                    res.status(200).json({ userId: this.lastID });
+                });
+            } catch (error) {
+                console.error('Error al procesar la imagen de perfil:', error);
+                return res.status(500).json({ error: 'Error al procesar la imagen de perfil' });
+            }
         });
     });
 });
+
 
 // Endpoint para iniciar sesión
 app.post('/login', (req, res) => {
@@ -94,8 +113,23 @@ app.post('/login', (req, res) => {
 
         bcrypt.compare(password, user.password, (err, result) => {
             if (result) {
-                const token = jwt.sign({ userId: user.id, username: user.username }, JWT_SECRET, { expiresIn: '1h' });
-                res.json({ token, username: user.username, userId: user.id });
+                // Construye la ruta de la imagen de perfil basada en el nombre de usuario
+                // Ajusta esta ruta según cómo estés almacenando las imágenes
+                const profileImagePath = `/uploads/${username}/profile-img/profile.jpg`;
+
+                const token = jwt.sign(
+                    { userId: user.id, username: user.username, profileImagePath },
+                    JWT_SECRET,
+                    { expiresIn: '1h' }
+                );
+
+                // Incluye la ruta de la imagen de perfil en la respuesta
+                res.json({
+                    token,
+                    username: user.username,
+                    userId: user.id,
+                    profileImagePath // Asegúrate de que el cliente sepa manejar este campo
+                });
             } else {
                 res.status(401).send('Contraseña incorrecta');
             }
@@ -103,7 +137,7 @@ app.post('/login', (req, res) => {
     });
 });
 
-// Aquí puedes seguir agregando tus endpoints...
+
 
 const port = 3001;
 app.listen(port, () => {

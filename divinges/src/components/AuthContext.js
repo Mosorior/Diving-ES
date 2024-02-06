@@ -1,39 +1,38 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode'; // Asegúrate de que la importación sea correcta
+import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [isLoading, setIsLoading] = useState(true); // Cambio inicial a true para reflejar la carga inicial
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        // Verifica si ya existe un token al cargar el componente
+    const [user, setUser] = useState(() => {
         const token = localStorage.getItem('token');
         if (token) {
             try {
+                // Asumiendo que el token JWT incluye información relevante del usuario en su payload
                 const decoded = jwtDecode(token);
-                setUser({
-                    isLoggedIn: true,
-                    token,
-                    ...decoded
-                });
+                return { isLoggedIn: true, token, ...decoded };
             } catch (error) {
-                console.error('Error decoding token: ', error);
-                localStorage.removeItem('token'); // Remueve el token si no es válido
+                console.error('Error decoding token:', error);
+                localStorage.removeItem('token');
+                return null;
             }
         }
-        setIsLoading(false); // Establece isLoading a false después de intentar cargar el usuario
+        return null;
+    });
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        // Este efecto ya maneja la carga inicial del estado de autenticación basado en el token existente
     }, []);
 
     const login = async (loginData) => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await fetch('http://localhost:3001/login', { // Asegúrate de ajustar la URL al endpoint correcto
+            const response = await fetch('http://localhost:3001/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -46,13 +45,15 @@ export const AuthProvider = ({ children }) => {
                 throw new Error(errorData.message || 'Error al iniciar sesión. Por favor, intente nuevamente.');
             }
 
-            const data = await response.json();
-            localStorage.setItem('token', data.token);
-            const decoded = jwtDecode(data.token);
+            const { token, ...userData } = await response.json();
+            localStorage.setItem('token', token);
+            // Aquí decodificamos el token para extraer la información del usuario si es necesario
+            // O asumimos que userData ya contiene toda la información necesaria
             setUser({
                 isLoggedIn: true,
-                token: data.token,
-                ...decoded
+                token,
+                ...jwtDecode(token), // Decodifica el token para obtener información del usuario
+                ...userData, // Usa directamente los datos del usuario si el token no incluye toda la info necesaria
             });
         } catch (error) {
             setError(error.message);

@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { useAuth } from './AuthContext';
+import { useAuth } from './AuthContext'; // Asegúrate de que esta ruta sea correcta
 import '../style/ModalBase.css';
 
 const LoginForm = ({ onClose, toggleModal }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const { login } = useAuth();
+    const { login } = useAuth(); // Asume que login actualiza el contexto global con la información del usuario
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await fetch('http://localhost:3001/login', { // Ajuste de la URL al endpoint correcto
+            const response = await fetch('http://localhost:3001/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -20,18 +20,19 @@ const LoginForm = ({ onClose, toggleModal }) => {
             });
     
             if (!response.ok) {
-                const errorData = await response.json(); // Obtiene el mensaje de error del servidor
-                throw new Error(errorData.message || 'Error al iniciar sesión'); // Usa el mensaje de error del servidor si está disponible
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Error al iniciar sesión');
             }
     
             const data = await response.json();
             localStorage.setItem('token', data.token);
-            // Asegúrate de que la función login en tu AuthContext maneje adecuadamente los datos del usuario
-            await login(data.user || data); // Ajusta según la estructura de tu respuesta
+            // Aquí, asegúrate de que la función login maneje adecuadamente los datos del usuario,
+            // incluida la imagen de perfil si está disponible en la respuesta
+            await login(data); // Pasamos todos los datos a la función login
 
             onClose(); // Cierra el modal después de un inicio de sesión exitoso
         } catch (error) {
-            setError(error.message); // Muestra el mensaje de error obtenido
+            setError(error.message);
         }
     };
 
@@ -66,7 +67,7 @@ const LoginForm = ({ onClose, toggleModal }) => {
                         <button type="button" onClick={onClose}>Cerrar</button>
                     </div>
                     <div className="alternate-action">
-                        <span>¿No estás registrado?</span>
+                        <span>¿No estás registrado? </span>
                         <button type="button" onClick={() => toggleModal('register')}>Registrarse</button>
                     </div>
                 </form>
