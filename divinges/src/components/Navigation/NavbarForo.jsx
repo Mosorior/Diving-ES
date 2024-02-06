@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 import '../../style/NavbarForo.css';
 
-const NavbarForo = ({ openLoginModal, openRegisterModal }) => {
+const NavbarForo = ({ openLoginModal }) => { // Quitar openRegisterModal si no se va a usar
     const { user, logout } = useAuth();
 
     return (
@@ -24,13 +24,14 @@ const NavbarForo = ({ openLoginModal, openRegisterModal }) => {
             </ul>
             {user ? (
                 <div className="user-profile">
-                    <img src={user.imagenPerfil} alt="Perfil" className="profile-image"/>
+                    {/* Asegúrate de que la URL sea correcta y accesible */}
+                    <img src={`http://localhost:5000/uploads/${user.imagenPerfil}`} alt="Perfil" className="profile-image"/>
                     <button onClick={logout}>Cerrar Sesión</button>
                 </div>
             ) : (
                 <div className="auth-buttons">
+                    {/* Mantener solo el botón de Iniciar Sesión */}
                     <button onClick={openLoginModal}>Iniciar Sesión</button>
-                    <button onClick={openRegisterModal}>Registrarse</button>
                 </div>
             )}
         </nav>
