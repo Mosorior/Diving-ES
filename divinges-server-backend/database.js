@@ -2,7 +2,7 @@ const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcrypt');
 const path = require('path');
 const dbPath = path.resolve(__dirname, 'foroBuceo.db');
-const defaultProfileImagePath = path.join('img', 'img.webp');
+const defaultProfileImagePath = path.join('./img/img.png');
 
 
 const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
@@ -15,7 +15,7 @@ const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CR
             username TEXT NOT NULL UNIQUE,
             email TEXT NOT NULL UNIQUE,
             passwordHash TEXT NOT NULL,
-            rol TEXT DEFAULT 'usuario'
+            rol TEXT DEFAULT 'usuario',
             imagenPerfil TEXT DEFAULT '${defaultProfileImagePath}'
         )`, (err) => {
             if (err) console.error('Error al crear la tabla usuarios', err.message);
@@ -44,6 +44,11 @@ const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CR
             if (err) console.error('Error al crear la tabla publicaciones', err.message);
             else console.log("Tabla 'publicaciones' creada correctamente.");
         });
+        if (!err){
+            console.log("")
+        console.log("Servidor corriendo... Ctrl+C para parar")
+        }
+        
     }
 });
 

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios'; // Importa axios para hacer solicitudes HTTP
+import  { jwtDecode } from 'jwt-decode'; // Corrección aquí
 
 const AuthContext = createContext();
 
@@ -7,35 +7,51 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(() => {
+        // Verifica si ya existe un token al cargar el componente
         const token = localStorage.getItem('token');
-        return token ? { isLoggedIn: true, token } : null;
+        if (token) {
+            const decoded = jwtDecode(token);
+            return { isLoggedIn: true, token, ...decoded };
+        }
+        return null;
     });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        // Podrías verificar la validez del token contra el servidor aquí
+        // No es necesario volver a verificar el token aquí, se hace en el useState inicial
     }, []);
 
     const login = async (loginData) => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await axios.post('http://localhost:5000/api/auth/login', loginData);
-            localStorage.setItem('token', response.data.token);
-            setUser({ isLoggedIn: true, token: response.data.token, ...response.data.usuario });
+            const response = await fetch('http://localhost:5000/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(loginData),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.mensaje || 'Error al iniciar sesión. Por favor, intente nuevamente.');
+            }
+
+            const data = await response.json();
+            localStorage.setItem('token', data.token);
+            setUser({ isLoggedIn: true, token: data.token, ...data.usuario });
             setIsLoading(false);
         } catch (error) {
-            setError('Error al iniciar sesión. Por favor, intente nuevamente.');
+            setError(error.message);
             setIsLoading(false);
         }
     };
 
     const logout = () => {
-        setIsLoading(true);
         localStorage.removeItem('token');
         setUser(null);
-        setIsLoading(false);
     };
 
     return (

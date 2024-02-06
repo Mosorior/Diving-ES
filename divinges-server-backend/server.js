@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require('./database');
 const authRoutes = require('./rutas/authRoutes');
-require('dotenv').config({ path: '../TestSECRET.env' }); 
+require('dotenv').config({ path: './TestSECRET.env' }); 
 
 const app = express();
 const PORT = process.env.PORT || 5000;

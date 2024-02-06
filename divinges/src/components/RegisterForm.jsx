@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import '../style/ModalBase.css';
 
 const RegisterForm = ({ onClose, toggleModal }) => {
@@ -16,16 +15,26 @@ const RegisterForm = ({ onClose, toggleModal }) => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:5000/api/auth/registro', formData, {
+            const response = await fetch('http://localhost:5000/api/auth/registro', {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                body: JSON.stringify(formData),
             });
-            console.log(response.data);
+
+            if (!response.ok) {
+                // Si el servidor responde con un código de error HTTP,
+                // lanza un error para entrar al bloque catch
+                throw new Error('Error al registrar');
+            }
+
+            const data = await response.json();
+            console.log(data);
             onClose();
         } catch (error) {
             console.error("Error completo:", error);
-            setError(error.response ? error.response.data.message : 'Error al registrar. Por favor, intente nuevamente.');
+            setError('Error al registrar. Por favor, intente nuevamente.');
         }
     };
 
@@ -73,7 +82,7 @@ const RegisterForm = ({ onClose, toggleModal }) => {
                         <button type="button" onClick={onClose}>Cerrar</button>
                     </div>
                     <div className="alternate-action">
-                        <span>¿Ya estás registrado? </span>
+                        <span>¿Ya estás registrado?</span>
                         <button type="button" onClick={() => toggleModal('login')}>Iniciar Sesión</button>
                     </div>
                 </form>

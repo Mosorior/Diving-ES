@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useAuth } from './AuthContext';
 import '../style/ModalBase.css';
 
-const LoginForm = ({ onClose }) => { // Se ha quitado toggleModal ya que no se usa dentro de este componente
-    const [username, setUsername] = useState(''); // Cambiado de email a username
+const LoginForm = ({ onClose, toggleModal }) => {
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const { login } = useAuth();
@@ -12,9 +11,26 @@ const LoginForm = ({ onClose }) => { // Se ha quitado toggleModal ya que no se u
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/api/auth/login', { username, password }); // Cambiado de email a username
-            localStorage.setItem('token', response.data.token);
-            login(response.data.usuario);
+            const response = await fetch('http://localhost:5000/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            });
+    
+            if (!response.ok) {
+                throw new Error('Error al iniciar sesión');
+            }
+    
+            const data = await response.json();
+            localStorage.setItem('token', data.token);
+            await login(data.usuario);
+
+            // Recarga la página para reflejar el cambio de estado de autenticación
+            window.location.reload();
+    
+            // Aquí puedes redirigir a otra página o forzar una recarga de la página actual
             onClose();
         } catch (error) {
             setError("Error al iniciar sesión. Por favor, inténtalo de nuevo.");
@@ -51,7 +67,10 @@ const LoginForm = ({ onClose }) => { // Se ha quitado toggleModal ya que no se u
                         <button type="submit">Iniciar Sesión</button>
                         <button type="button" onClick={onClose}>Cerrar</button>
                     </div>
-                    {/* La funcionalidad para alternar al formulario de registro debe manejarse en el componente padre o a través de enrutamiento */}
+                    <div className="alternate-action">
+                        <span>¿No estás registrado? </span>
+                        <button type="button" onClick={() => toggleModal('register')}>Registrarse</button>
+                    </div>
                 </form>
             </div>
         </div>

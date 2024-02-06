@@ -20,7 +20,8 @@ El propósito es facilitar la planificación y exploración de inmersiones en Es
   - Bcrypt (para encriptar contraseñas)
   - Express (como servidor para almacenar datos)
   - Multer (para carga de archivos)
-  - SQLite3 (para base de da)
+  - SQLite3 (para base de datos)
+  - Fetch (para pasar del frontend al backend)
 
 ## Planificación
 1. **Investigación y Diseño de la Página Web:** 6 horas.
