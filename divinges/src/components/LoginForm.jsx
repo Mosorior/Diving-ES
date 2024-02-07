@@ -30,6 +30,8 @@ const LoginForm = ({ onClose, toggleModal }) => {
             // incluida la imagen de perfil si está disponible en la respuesta
             await login(data); // Pasamos todos los datos a la función login
 
+            window.location.reload();
+
             onClose(); // Cierra el modal después de un inicio de sesión exitoso
         } catch (error) {
             setError(error.message);
