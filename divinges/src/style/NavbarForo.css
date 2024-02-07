@@ -1,22 +1,20 @@
-/* NavbarForo.css */
-@font-face {
-    font-family: 'Gobold';
-    src: url('../assets/fonts/Gobold.otf') format('opentype');
-}
-
-@font-face {
-    font-family: 'Ethnocentric';
-    src: url('../assets/fonts/ethnocentric.otf') format('opentype');
-}
+/* Ajustes en NavbarForo.css para centrar enlaces y mover el botón + a la derecha */
 
 .navbar-foro {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Ajustado para alinear los elementos a los extremos */
     align-items: center;
-    background-color: #013567; /* Fondo oscuro para modo oscuro */
-    color: white; /* Texto blanco para contraste */
-    padding: 0 30px; /* Ajusta el espaciado a tu gusto */
+    background-color: #013567; /* Mantenemos el color de fondo */
+    color: white; /* Mantenemos el color del texto */
+    padding: 0 30px; /* Ajustamos el espaciado */
     height: 50px;
+}
+
+.navbar-foro .nav-links {
+    display: flex;
+    justify-content: center; /* Centra los enlaces en su contenedor */
+    align-items: center;
+    flex-grow: 1; /* Permite que el contenedor de enlaces crezca */
 }
 
 .navbar-foro ul {
@@ -24,37 +22,41 @@
     display: flex;
     margin: 0;
     padding: 0;
+    justify-content: center; /* Asegura que los enlaces estén centrados */
 }
 
 .navbar-foro li {
-    margin: 0 10px;
+    margin: 0 10px; /* Ajusta el margen entre enlaces */
 }
 
 .navbar-foro a {
     color: white;
     text-decoration: none;
-    font-family: 'Gobold';
+    font-family: 'Gobold'; /* Mantenemos la fuente */
 }
 
-.navbar-foro .auth-buttons button {
+/* Contenedor para el botón + */
+.navbar-foro .create-post-container {
+    display: flex;
+    justify-content: flex-end; /* Alinea el botón + a la derecha */
+    flex-grow: 0; /* Evita que el contenedor crezca, manteniendo el botón a la derecha */
+}
+
+.create-post-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.create-post-icon {
     background-color: #4CB5AB;
     color: white;
-    border: none;
-    padding: 10px 20px;
-    margin-left: 10px;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
     cursor: pointer;
-    border-radius: 5px;
-    font-family: 'Gobold';
 }
-
-.navbar-foro .auth-buttons button:hover {
-    background-color: #31828b;
-}
-
-.profile-image {
-    width: 50px; /* o puedes usar max-width si prefieres */
-    height: auto; /* mantiene la proporción de la imagen */
-    border-radius: 50%; /* Opcional: crea un efecto de imagen circular */
-  }
-
-/* Estilos adicionales para la respuesta y transiciones si es necesario */

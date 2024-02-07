@@ -3,37 +3,27 @@ import { NavLink } from 'react-router-dom';
 import { useAuth } from '../AuthContext'; // Asegúrate de que la ruta sea correcta
 import '../../style/NavbarForo.css';
 
-const NavbarForo = ({ openLoginModal }) => {
-    const { user, logout } = useAuth(); // Extracción correcta de user y logout del contexto
+const NavbarForo = () => {
+    const { user } = useAuth();
 
     return (
         <nav className="navbar-foro">
+        <div className="nav-links"> {/* Contenedor agregado para los enlaces */}
             <ul>
-                <li>
-                    <NavLink to="/foro/general" className={({ isActive }) => isActive ? 'active' : undefined}>General</NavLink>
-                </li>
-                <li>
-                    <NavLink to="/foro/equipo" className={({ isActive }) => isActive ? 'active' : undefined}>Equipo de Buceo</NavLink>
-                </li>
-                <li>
-                    <NavLink to="/foro/sitios" className={({ isActive }) => isActive ? 'active' : undefined}>Sitios de Buceo</NavLink>
-                </li>
-                <li>
-                    <NavLink to="/foro/conservacion" className={({ isActive }) => isActive ? 'active' : undefined}>Conservación Marina</NavLink>
-                </li>
+                <li><NavLink to="/foro/general">General</NavLink></li>
+                <li><NavLink to="/foro/equipo">Equipo de Buceo</NavLink></li>
+                <li><NavLink to="/foro/sitios">Sitios de Buceo</NavLink></li>
+                <li><NavLink to="/foro/conservacion">Conservación Marina</NavLink></li>
             </ul>
-            {user ? (
-                <div className="user-profile">
-                    {/* Asegúrate de que la ruta de la imagen sea correcta y coincida con cómo se almacena en el servidor */}
-                    <img src={`http://localhost:3001/uploads/${user.username}/profile-img/profile.jpeg`} alt="Perfil" className="profile-image" />
-                    <button onClick={logout}>Cerrar Sesión</button>
-                </div>
-            ) : (
-                <div className="auth-buttons">
-                    <button onClick={openLoginModal}>Iniciar Sesión</button>
-                </div>
-            )}
-        </nav>
+        </div>
+        {user && (
+            <div className="create-post-container"> {/* Contenedor para el botón + */}
+                <NavLink to="/crearpost" className="create-post-link">
+                    <i className="fas fa-plus create-post-icon"></i>
+                </NavLink>
+            </div>
+        )}
+    </nav>
     );
 };
 

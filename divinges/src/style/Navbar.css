@@ -1,4 +1,4 @@
-/* Navbar.css */
+/* Importación de fuentes */
 @font-face {
     font-family: 'Gobold';
     src: url('../assets/fonts/Gobold.otf') format('opentype');
@@ -12,16 +12,39 @@
     font-weight: normal;
     font-style: normal;
 }
-ul{
+
+/* Reset y estilos base para listas y enlaces */
+ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
+
 li {
     display: inline;
     margin-right: 5px;
 }
-.Logo{
+
+a {
+    color: #4CB5AB;
+    text-decoration: none;
+    margin-right: 1rem;
+}
+
+/* Estilos específicos del Navbar */
+.NavContainer {
+    position: initial;
+    top: 0;
+    width: 100%;
+    padding: 0.4rem;
+    background-color: #001f3f;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 5;
+}
+
+.Logo {
     margin-left: 20px;
     margin-right: 10px;
     font-weight: 400;
@@ -29,23 +52,57 @@ li {
     font-size: 30px;
     background: -webkit-linear-gradient(35deg, #69ecdf, #31828b);
     -webkit-background-clip: text;
-    background-clip: text;
     -webkit-text-fill-color: transparent;
     color: #4cb5ab;
     z-index: 4;
-    b{
-        font-size: 36px;
-        font-family: 'Ethnocentric';
-    }
-    color: #4CB5AB;
+    cursor: default; /* Ajusta según la interacción deseada */
 }
 
-a{
-    color: #4CB5AB;
-    text-decoration: none;
-    margin-right: 1rem;
+.Logo b {
+    font-size: 36px;
+    font-family: 'Ethnocentric';
 }
-.links{
+
+.nav-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.links, .user-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-button {
+    cursor: pointer;
+    margin-right: 20px; /* Margen derecho */
+}
+
+.login-button i {
+    color: #4CB5AB; /* Color del icono, ajusta según tu diseño */
+    font-size: 1.5rem; /* Tamaño del icono */
+}
+
+
+@media (max-width: 768px) {
+    .nav-content {
+        justify-content: flex-end;
+    }
+
+    .links {
+        display: none;
+    }
+
+    .links.active {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.links {
     opacity: 0;
     position: absolute;
     top: 100%;
@@ -54,78 +111,124 @@ a{
     text-align: center;
     z-index: 3;
     transform: translateY(-20px);
-    transition: opacity .5s ease, transform 0.5s ease;
+    transition: opacity 0.5s ease, transform 0.5s ease;
     border-radius: 10px;
-    a{
-        color: white;
-        font-size: 2rem;
-        display: block;
-    }
-    @media(min-width: 768px){
+}
+
+.links a {
+    color: white;
+    font-size: 2rem;
+    display: block;
+}
+
+@media (min-width: 768px) {
+    .links {
         position: initial;
         margin: 0;
         opacity: 1;
         transform: translateY(0);
         pointer-events: auto;
-        a{
-            font-size: 1.5rem;
-            color: white;
-            display: inline;
-        }
+    }
+
+    .links a {
+        font-size: 1.5rem;
+        color: white;
+        display: inline;
     }
 }
-.links.active{
+
+.links.active {
     opacity: 1;
     width: 100%;
     display: block;
     position: absolute;
     margin-left: auto;
     margin-right: auto;
-    top: 0;
+    top: 30%;
     left: 0;
     right: 0;
-    z-index:4;
+    z-index: 4;
     text-align: center;
     transform: translateY(0);
-
-    a{
-        font-size: 2rem;
-        margin-top: 1rem;
-        color: white;
-    }
 }
-.burger{
-    z-index: 4;
-    margin-right: 20px;
-    @media(min-width: 768px){
+
+.links.active a {
+    font-size: 1.2rem;
+    display: block;
+    color: white;
+}
+
+.burger {
+    z-index: 100;
+}
+
+@media (min-width: 768px) {
+    .burger {
         display: none;
     }
 }
-.navbar {
+
+/* Estilos adicionales para la interacción y presentación del perfil y el menú */
+.user-profile {
     position: relative;
-    z-index: 5;
-    opacity: 0;
-    transform: translateY(-50px);
-  }
-  
-  /* Agrega un nuevo estilo para el recuadro con enlaces */
-  .overlay-box {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.3); /* Fondo semi-transparente */
-    z-index: 10; /* Asegura que esté por encima de todo */
     display: flex;
-    justify-content: center;
     align-items: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.5s ease;
-  }
-  
-  .overlay-box.active {
-    opacity: 1;
-    pointer-events: auto;
-  }
+}
+
+.user-actions img {
+    max-width: 50px;
+    height: auto;
+    border-radius: 50%;
+}
+
+.profile-image {
+    width: 50px; /* Ajusta este valor según necesites */
+    height: auto; /* Mantiene la proporción de la imagen */
+    border-radius: 50%; /* Crea un efecto de imagen circular */
+    cursor: pointer; /* Cambia el cursor a pointer para indicar interactividad */
+    margin-right: 20px; /* Asegura un margen derecho, ajusta según necesites */
+}
+
+.profile-image:hover {
+    opacity: 0.75;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%; /* Ajusta según la altura de tu navbar */
+    right: 0;
+    background-color: #013567; /* Ajusta al color de fondo de tu preferencia */
+    border: 1px solid #4CB5AB; /* Añade un borde si lo deseas */
+    border-radius: 5px;
+    width: auto;
+    min-width: 160px;
+    box-sizing: border-box;
+    z-index: 100; /* Asegura que el menú esté por encima de otros elementos */
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    color: white; /* Color del texto */
+    padding: 10px 20px; /* Espaciado interno */
+    text-decoration: none; /* Quita el subrayado de los enlaces */
+    display: block; /* Asegura que cada elemento ocupe su propia línea */
+    box-sizing: border-box;
+    font-family: 'Gobold';
+    cursor: pointer;
+    user-select: none;
+}
+
+.dropdown-item:hover {
+    background-color: #31828b;
+}
+
+@media (max-width: 768px) {
+    .dropdown-menu {
+        width: 100%;
+        right: auto;
+    }
+}
