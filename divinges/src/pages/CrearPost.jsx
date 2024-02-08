@@ -8,6 +8,7 @@ import { useAuth } from '../components/AuthContext'; // Asegúrate de que la rut
 
 function CrearPost() {
     const [titulo, setTitulo] = useState('');
+    const [tags, setTags] = useState('general');
     const simpleMdeRef = useRef(null);
     const [imagenes, setImagenes] = useState([]);
     const mdeRef = useRef(null);
@@ -46,6 +47,7 @@ function CrearPost() {
         formData.append('titulo', titulo);
         formData.append('cuerpo', simpleMdeRef.current.value());
         formData.append('author', user.username); // Asume que el username está disponible en el estado del usuario
+        formData.append('tags', tags);
         formData.append('date', fechaActual); // Añade la fecha actual
         imagenes.forEach(imagen => {
             formData.append('imagenes', imagen);
@@ -98,6 +100,13 @@ function CrearPost() {
                         multiple
                         onChange={handleImageChange}
                     />
+                     <label>Tags:</label>
+                    <select name="tags" value={tags} onChange={(e) => setTags(e.target.value)}>
+                        <option value="general">General</option>
+                        <option value="conservacion">Conservación</option>
+                        <option value="sitios">Sitios</option>
+                        <option value="equipo">Equipo</option>
+                    </select>
                 </div>
                 <button type="submit">Crear Post</button>
             </form>

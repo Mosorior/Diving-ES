@@ -25,15 +25,12 @@ const upload = multer({ storage });
 
 // Endpoint para crear un nuevo post.
 router.post('/crearpost', upload.array('imagenes'), (req, res) => {
-    const { titulo, cuerpo } = req.body;
-    const imagenes = req.files.map(file => `/uploads/posts/${file.filename}`); // Genera las rutas de acceso para las imágenes subidas.
-
-    // Inserta el post en la base de datos. Asume que tienes una columna para imágenes o una tabla relacionada.
-    const insertPostQuery = 'INSERT INTO foroposts (title, content, images) VALUES (?, ?, ?)';
-    // Convierte el array de rutas de imágenes en una cadena si tu base de datos no soporta directamente arrays.
+    const { titulo, cuerpo, author, date, tags } = req.body; // Asegúrate de incluir 'tags' aquí
+    const imagenes = req.files.map(file => `/uploads/posts/${file.filename}`);
+    const insertPostQuery = 'INSERT INTO foroposts (title, content, author, date, images, tags) VALUES (?, ?, ?, ?, ?, ?)'; // Asegúrate de que la consulta SQL incluya 'tags'
     const imagesPath = imagenes.join(';'); 
 
-    db.run(insertPostQuery, [titulo, cuerpo, imagesPath], function(err) {
+    db.run(insertPostQuery, [titulo, cuerpo, author, date, imagesPath, tags], function(err) {
         if (err) {
             console.error('Error al insertar el post en la base de datos:', err);
             return res.status(500).send('Error al crear el post');
