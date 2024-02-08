@@ -23,6 +23,19 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+// Endpoint para obtener todos los posts
+router.get('/posts', (req, res) => {
+    const selectPostsQuery = 'SELECT * FROM foroposts ORDER BY date DESC'; // Ajusta según tus necesidades
+
+    db.all(selectPostsQuery, [], (err, rows) => {
+        if (err) {
+            console.error('Error al obtener los posts:', err);
+            return res.status(500).send('Error al obtener los posts');
+        }
+        res.status(200).json(rows);
+    });
+});
+
 // Endpoint para crear un nuevo post.
 router.post('/crearpost', upload.array('imagenes'), (req, res) => {
     const { titulo, cuerpo, author, date, tags } = req.body; // Asegúrate de incluir 'tags' aquí

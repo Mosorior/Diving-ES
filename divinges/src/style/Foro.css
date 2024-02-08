@@ -5,16 +5,26 @@
     padding: 20px;
     border-radius: 10px;
     margin: 20px auto;
-    width: 100%;
+    width: 95%; /* Ajuste para no ocupar el 100% del ancho */
+    max-width: 950px; /* Establece un ancho máximo para el contenedor */
     text-align: center;
 }
 
-.foro-container h2 {
-    margin: 0 auto; /* Centra el título horizontalmente */
-    padding: 20px; /* Agrega un poco de espacio */
-    background-color: #013567; /* O el color que prefieras */
-    color: white; /* Texto en blanco para contraste */
+.foro-container h2,
+.navbar-foro ul li a,
+.navbar-foro .auth-buttons button,
+.posts-list .post h3,
+.posts-list .post p {
+    color: white; /* Ajuste general del color de texto para simplificar */
 }
+
+
+.foro-container h2 {
+    background-color: #013567;
+    padding: 20px;
+    margin-bottom: 20px; /* Agrega espacio entre el título y el contenido siguiente */
+}
+
 
 .navbar-foro {
     display: flex;
@@ -54,11 +64,18 @@
     background-color: #31828b;
 }
 
+.posts-list {
+    max-width: 750px; /* Establece un ancho máximo para los posts, ligeramente menor que el contenedor para efectos visuales */
+    margin: 0 auto; /* Centra la lista de posts dentro del foro-container */
+    width: 100%; /* Ocupa todo el ancho disponible hasta max-width */
+}
+
 .posts-list .post {
-    background-color: #013567; /* Un tono de azul más claro para los posts */
+    background-color: #013567;
     padding: 15px;
     margin-bottom: 20px;
     border-radius: 5px;
+    box-sizing: border-box;
 }
 
 .posts-list .post h3 {
@@ -67,4 +84,57 @@
 
 .posts-list .post p {
     margin-bottom: 5px;
+}
+
+
+.post-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinea los elementos a la izquierda */
+    margin-bottom: 10px;
+}
+
+.post-tag {
+    background-color: #4cb5ab; /* Color de fondo para las tags */
+    color: white; /* Texto en blanco para las tags */
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 0.8rem; /* Tamaño de fuente más pequeño para las tags */
+    align-self: flex-start; /* Asegura que las tags estén al inicio del div */
+    margin-bottom: 5px; /* Espacio entre las tags y el título */
+}
+
+.post-title-author {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center; /* Centrado verticalmente */
+}
+
+.post-title {
+    margin: 0; /* Elimina el margen predeterminado */
+    font-size: 1.2rem; /* Ajusta el tamaño de fuente según prefieras */
+    color: #69ecdf; /* Un color azul claro para el título */
+}
+
+.post-author {
+    font-size: 0.9rem; /* Tamaño de fuente más pequeño para el autor */
+    color: #ddd; /* Color de texto para el autor */
+    margin-left: auto; /* Empuja el autor a la derecha */
+    margin-right: 40px;
+}
+
+.post-preview {
+    color: #EEE; /* Color de texto más claro para la vista previa */
+    font-size: 0.95rem; /* Tamaño de fuente para la vista previa */
+    text-align: left; /* Alinea el texto a la izquierda */
+    margin-top: 10px; /* Espacio entre el encabezado y la vista previa */
+}
+
+.post-date {
+    font-size: 0.8rem; /* Tamaño de fuente más pequeño para la fecha */
+    color: #BBB; /* Color de texto más tenue para la fecha */
+    margin-top: 10px; /* Espacio entre la vista previa y la fecha */
+    text-align: right;
+    margin-right: 40px;
 }
