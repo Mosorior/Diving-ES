@@ -1,16 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import SimpleMDE from 'easymde';
 import 'easymde/dist/easymde.min.css';
 import { marked } from 'marked';
 import Navbar from '../components/Navigation/Navbar';
+import { useAuth } from '../components/AuthContext'; // Asegúrate de que la ruta sea correcta
 
 function CrearPost() {
     const [titulo, setTitulo] = useState('');
     const simpleMdeRef = useRef(null);
     const [imagenes, setImagenes] = useState([]);
-    const mdeRef = useRef(null); // Referencia para el elemento DOM del <textarea>
+    const mdeRef = useRef(null);
+    const navigate = useNavigate();
+    const { user } = useAuth(); // Usar useAuth para acceder al usuario actual y al token
 
+    useEffect(() => {
+        if (!user) {
+            navigate('/login');
+        }
+    }, [user, navigate]);
 
     useEffect(() => {
         if (mdeRef.current) {
@@ -23,7 +31,6 @@ function CrearPost() {
             });
         }
 
-        // Limpieza al desmontar
         return () => {
             if (simpleMdeRef.current) {
                 simpleMdeRef.current.toTextArea();
@@ -34,9 +41,12 @@ function CrearPost() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const fechaActual = new Date().toISOString(); // Formato ISO para la fecha
         const formData = new FormData();
         formData.append('titulo', titulo);
         formData.append('cuerpo', simpleMdeRef.current.value());
+        formData.append('author', user.username); // Asume que el username está disponible en el estado del usuario
+        formData.append('date', fechaActual); // Añade la fecha actual
         imagenes.forEach(imagen => {
             formData.append('imagenes', imagen);
         });
@@ -44,14 +54,19 @@ function CrearPost() {
         try {
             const res = await fetch('http://localhost:3001/crearpost', {
                 method: 'POST',
-                body: formData, // FormData será correctamente interpretado por el servidor
+                body: formData,
+                headers: {
+                    'Authorization': `Bearer ${user.token}`, // Asegúrate de que tu backend espera un header de autorización
+                },
             });
-            
-            console.log(res.data);
-            // Aquí puedes redirigir al usuario o mostrar un mensaje de éxito
+
+            if (!res.ok) {
+                throw new Error('Error al crear el post');
+            }
+
+            navigate('/foro'); // Redirigir al foro después de crear el post
         } catch (error) {
             console.error("Error al crear el post: ", error);
-            // Manejar el error
         }
     };
 
