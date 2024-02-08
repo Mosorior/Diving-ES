@@ -3,7 +3,7 @@ import '../../style/Navbar.css'; // Asegúrate de que la ruta sea correcta
 import BurgerButton from './BurgerButton';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import LoginForm from '../LoginForm.jsx'; // Asegúrate de que la ruta sea correcta
-// Import RegisterForm si lo necesitas
+import RegisterForm from '../RegisterForm.jsx'; // Asegúrate de que la ruta sea correcta
 import { useAuth } from '../AuthContext'; // Asegúrate de que la ruta sea correcta
 
 function Navbar() {
@@ -17,8 +17,27 @@ function Navbar() {
   const { user, logout } = useAuth();
 
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const handleOpenLoginModal = () => setShowLoginModal(true);
-  const handleCloseLoginModal = () => setShowLoginModal(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false); // Agregado para manejar la visibilidad del modal de registro
+
+  const handleOpenLoginModal = () => {
+    setShowLoginModal(true);
+    setShowRegisterModal(false); // Asegúrate de que solo un modal esté visible a la vez
+  };
+  const handleCloseModal = () => {
+    setShowLoginModal(false);
+    setShowRegisterModal(false);
+  };
+
+  // Función para alternar entre modales
+  const toggleModal = (modalType) => {
+    if (modalType === 'register') {
+      setShowLoginModal(false);
+      setShowRegisterModal(true);
+    } else if (modalType === 'login') {
+      setShowLoginModal(true);
+      setShowRegisterModal(false);
+    }
+  };
 
   useEffect(() => {
     const animationEndHandler = () => {
@@ -96,11 +115,11 @@ function Navbar() {
           )}
         </div>
         <div className='burger'>
-          <BurgerButton clicked={clicked} handleClick={handleLinkClick} />
+          <BurgerButton clicked={clicked} handleClick={() => setClicked(!clicked)} />
         </div>
       </nav>
-      {showLoginModal && <LoginForm onClose={handleCloseLoginModal} />}
-      {/* Aquí podrías incluir el RegisterForm si es necesario */}
+      {showLoginModal && <LoginForm onClose={handleCloseModal} toggleModal={toggleModal} />}
+      {showRegisterModal && <RegisterForm onClose={handleCloseModal} toggleModal={toggleModal} />}
     </>
   );
 }

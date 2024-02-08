@@ -23,17 +23,22 @@ const RegisterForm = ({ onClose, toggleModal }) => {
                 body: JSON.stringify(formData),
             });
 
-            if (!response.ok) {
-                const errorData = await response.json(); // Intenta parsear el error como JSON
-                throw new Error(errorData.message || 'Error al registrar. Por favor, intente nuevamente.');
-            }
+            // Verifica si el tipo de contenido de la respuesta es JSON antes de analizarlo
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.indexOf('application/json') !== -1) {
+                const data = await response.json(); // Seguro para analizar como JSON
 
-            // La respuesta es exitosa, puedes optar por mostrar un mensaje de éxito
-            // o realizar otras acciones como iniciar sesión automáticamente.
-            const data = await response.json(); // Parsea la respuesta exitosa como JSON
-            console.log('Registro exitoso:', data);
-            // Aquí puedes redirigir al usuario o cerrar el modal de registro y mostrar un mensaje de éxito
-            onClose(); // Cierra el modal después de un registro exitoso
+                if (!response.ok) {
+                    throw new Error(data.message || 'Error al registrar. Por favor, intente nuevamente.');
+                }
+
+                console.log('Registro exitoso:', data);
+                onClose(); // Cierra el modal después de un registro exitoso
+            } else {
+                // No es JSON, maneja el caso adecuadamente, por ejemplo, leyendo la respuesta como texto
+                const text = await response.text();
+                throw new Error(text || 'Error al registrar. La respuesta no es JSON.');
+            }
         } catch (error) {
             console.error("Error durante el registro:", error);
             setError(error.message); // Actualiza el estado de error con el mensaje de error

@@ -9,6 +9,7 @@ import Home from './pages/Home.jsx';
 import Mapa from './pages/Mapa.jsx';
 import Calculadora from './pages/Calculadora.jsx';
 import Foro from './pages/Foro.jsx';
+import CrearPost from './pages/CrearPost.jsx';
 
 const App = () => {
   return (
@@ -20,6 +21,8 @@ const App = () => {
         <Route path="/mapa" element={<Mapa />} />
         <Route path="/calculadora" element={<Calculadora />} />
         <Route path="/foro" element={<Foro />} />
+        <Route path="/crearpost" element={<CrearPost />} />
+
       </Routes>
     </Router>
     </AuthProvider>
