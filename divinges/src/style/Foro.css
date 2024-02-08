@@ -25,6 +25,9 @@
     margin-bottom: 20px; /* Agrega espacio entre el título y el contenido siguiente */
 }
 
+h2:hover{
+    cursor: pointer;
+}
 
 .navbar-foro {
     display: flex;

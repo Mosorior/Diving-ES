@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import NavbarForo from '../components/Navigation/NavbarForo';
 import Navbar from '../components/Navigation/Navbar';
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
-import { marked } from 'marked'; // Asegúrate de importar marked para procesar el Markdown
-import DOMPurify from 'dompurify'; // Importa DOMPurify para sanear el HTML
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 import '../style/Foro.css';
 import '../style/ModalBase.css';
 
@@ -12,33 +13,43 @@ const Foro = () => {
     const [posts, setPosts] = useState([]);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showRegisterModal, setShowRegisterModal] = useState(false);
+    const { etiqueta } = useParams(); // Obtiene la etiqueta de la URL
+    const navigate= useNavigate();
+    
+    const irAlForo = () => {
+        navigate('/foro'); // Esto redirigirá al usuario a /foro
+    };
 
     useEffect(() => {
         const cargarPosts = async () => {
+            let url = 'http://localhost:3001/posts';
+            // Modifica la URL si se especifica una etiqueta en la ruta
+            if (etiqueta) {
+                url += `?tag=${etiqueta}`; // Modifica según cómo tu backend espera recibir la etiqueta
+            }
             try {
-                // Asegúrate de que la URL sea correcta según tu configuración de backend
-                const response = await fetch('http://localhost:3001/posts');
+                const response = await fetch(url);
                 if (!response.ok) {
-                    throw new Error('Error HTTP: ${response.status}');
+                    throw new Error(`Error HTTP: ${response.status}`);
                 }
-                const posts = await response.json();
-                setPosts(posts);
+                const fetchedPosts = await response.json();
+                setPosts(fetchedPosts);
             } catch (error) {
                 console.error("Error al cargar posts: ", error);
             }
         };
 
         cargarPosts();
-    }, []);
+    }, [etiqueta]); // Añade 'etiqueta' como dependencia para re-cargar posts cuando cambie
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // getMonth() es 0-index, añade 1 para hacerlo 1-index
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
         const year = date.getFullYear();
         const hours = date.getHours().toString().padStart(2, '0');
         const minutes = date.getMinutes().toString().padStart(2, '0');
-    
+
         return `${day}/${month}/${year} ${hours}:${minutes}`;
     };
 
@@ -61,7 +72,7 @@ const Foro = () => {
         <div>
             <Navbar />
             <div className="foro-container">
-                <h2>Foro</h2>
+                <h2 onClick={irAlForo}>Foro</h2>
                 <NavbarForo openLoginModal={openLoginModal} openRegisterModal={openRegisterModal} />
                 <div className="posts-list">
                     {posts.map(post => (
@@ -74,16 +85,16 @@ const Foro = () => {
                                 </div>
                             </div>
                             <div className="post-preview" dangerouslySetInnerHTML={{
-                                __html: post.content ? DOMPurify.sanitize(marked.parse(post.content.substring(0, 100))) : ''
-                                }}>
+                                __html: post.content ? DOMPurify.sanitize(marked.parse(post.content).substring(0, 100)) : ''
+                            }}>
                             </div>
                             <p className="post-date">{formatDate(post.date)}</p>
                         </div>
                     ))}
                 </div>
             </div>
-            {showLoginModal && <LoginForm onClose={closeLoginModal} toggleModal={() => toggleModals('register')} />}
-            {showRegisterModal && <RegisterForm onClose={closeRegisterModal} toggleModal={() => toggleModals('login')} />}
+            {showLoginModal && <LoginForm onClose={closeLoginModal} toggleModal={toggleModals} />}
+            {showRegisterModal && <RegisterForm onClose={closeRegisterModal} toggleModal={toggleModals} />}
         </div>
     );
 };

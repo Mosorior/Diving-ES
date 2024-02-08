@@ -22,7 +22,7 @@ const App = () => {
         <Route path="/calculadora" element={<Calculadora />} />
         <Route path="/foro" element={<Foro />} />
         <Route path="/crearpost" element={<CrearPost />} />
-
+        <Route path="/foro/:etiqueta" element={<Foro />} />
       </Routes>
     </Router>
     </AuthProvider>

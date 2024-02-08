@@ -25,9 +25,19 @@ const upload = multer({ storage });
 
 // Endpoint para obtener todos los posts
 router.get('/posts', (req, res) => {
-    const selectPostsQuery = 'SELECT * FROM foroposts ORDER BY date DESC'; // Ajusta según tus necesidades
+    const { tag } = req.query; // Obtiene el parámetro 'tag' de la consulta, si existe
+    let selectPostsQuery = 'SELECT * FROM foroposts';
+    const params = [];
 
-    db.all(selectPostsQuery, [], (err, rows) => {
+    if (tag) {
+        // Añade el filtrado por tag. Utiliza parámetros para evitar inyección SQL
+        selectPostsQuery += " WHERE tags LIKE ?";
+        params.push(`%${tag}%`); // Asume que tus tags están en un formato que permite el uso de LIKE
+    }
+
+    selectPostsQuery += ' ORDER BY date DESC';
+
+    db.all(selectPostsQuery, params, (err, rows) => {
         if (err) {
             console.error('Error al obtener los posts:', err);
             return res.status(500).send('Error al obtener los posts');
