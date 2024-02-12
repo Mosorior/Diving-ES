@@ -26,7 +26,6 @@ function CrearPost() {
         if (mdeRef.current) {
             simpleMdeRef.current = new SimpleMDE({
                 element: mdeRef.current,
-                initialValue: 'Escribe aquí...',
                 previewRender(plainText) {
                     return marked.parse(plainText);
                 },
@@ -95,21 +94,23 @@ function CrearPost() {
                     <textarea id="mde" ref={mdeRef}></textarea>
                 </div>
                 <div>
+                    {/* 
                     <label>Subir Imágenes:</label>
                     <input
                         type="file"
                         multiple
                         onChange={handleImageChange}
                     />
+                    */}
                      <label>Tags:</label>
-                    <select name="tags" value={tags} onChange={(e) => setTags(e.target.value)}>
+                    <select className="tag-select" name="tags" value={tags} onChange={(e) => setTags(e.target.value)}>
                         <option value="general">General</option>
                         <option value="conservacion">Conservación</option>
                         <option value="sitios">Sitios</option>
                         <option value="equipo">Equipo</option>
                     </select>
                 </div>
-                <button type="submit">Crear Post</button>
+                <button type="submit" className='btn-form'>Crear Post</button>
             </form>
         </div>
     );
