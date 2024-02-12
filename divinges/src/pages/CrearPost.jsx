@@ -11,7 +11,7 @@ function CrearPost() {
     const [titulo, setTitulo] = useState('');
     const [tags, setTags] = useState('general');
     const simpleMdeRef = useRef(null);
-    const [imagenes, setImagenes] = useState([]);
+    //const [imagenes, setImagenes] = useState([]);
     const mdeRef = useRef(null);
     const navigate = useNavigate();
     const { user } = useAuth(); // Usar useAuth para acceder al usuario actual y al token
@@ -49,9 +49,10 @@ function CrearPost() {
         formData.append('author', user.username); // Asume que el username está disponible en el estado del usuario
         formData.append('tags', tags);
         formData.append('date', fechaActual); // Añade la fecha actual
-        imagenes.forEach(imagen => {
+        /*imagenes.forEach(imagen => {
             formData.append('imagenes', imagen);
-        });
+        }
+        );*/
 
         try {
             const res = await fetch('http://localhost:3001/crearpost', {
@@ -72,9 +73,9 @@ function CrearPost() {
         }
     };
 
-    const handleImageChange = (e) => {
+    /*const handleImageChange = (e) => {
         setImagenes([...e.target.files]);
-    };
+    };*/
 
     return (
         <div>
