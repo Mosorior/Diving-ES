@@ -46,7 +46,7 @@ a {
 
 .Logo {
     margin-left: 20px;
-    margin-right: 10px;
+    margin-right: 50px;
     font-weight: 400;
     font-family: 'Ethnocentric';
     font-size: 30px;
@@ -141,6 +141,16 @@ a {
     transform: translateY(-20px);
     transition: opacity 0.8s ease, transform 1s ease;
     border-radius: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 80%;
+}
+
+.links ul {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .links a {
