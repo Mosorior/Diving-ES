@@ -50,12 +50,12 @@ a {
     font-weight: 400;
     font-family: 'Ethnocentric';
     font-size: 30px;
-    background: -webkit-linear-gradient(35deg, #69ecdf, #31828b);
+    background: linear-gradient(35deg, #69ecdf, #31828b);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: #4cb5ab;
+    background-clip: text; /* Añadido para soporte estándar */
+    color: transparent; /* Ajuste para soporte estándar */
     z-index: 4;
-    cursor: default; /* Ajusta según la interacción deseada */
+    cursor: default; 
 }
 
 .Logo b {
@@ -78,14 +78,13 @@ a {
 
 .login-button {
     cursor: pointer;
-    margin-right: 20px; /* Margen derecho */
+    margin-right: 20px; 
 }
 
 .login-button i {
-    color: #4CB5AB; /* Color del icono, ajusta según tu diseño */
-    font-size: 1.5rem; /* Tamaño del icono */
+    color: #4CB5AB;
+    font-size: 1.5rem;
 }
-
 
 @media (max-width: 768px) {
     .nav-content {
@@ -97,21 +96,50 @@ a {
     }
 
     .links.active {
-        display: flex;
-        flex-direction: column;
+        display: block;
+        position: fixed; /* Cambiado de 'absolute' a 'fixed' para cubrir toda la pantalla */
+        top: 0; /* Ajustado para que el menú cubra desde el top */
+        left: 0;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+        height: 100vh; /* Asegura que el fondo cubra toda la altura */
+        flex-direction: column; /* Cambio para organizar los enlaces verticalmente */
+        align-items: center; /* Centra los enlaces horizontalmente */
+        justify-content: center; /* Centra los enlaces verticalmente */
     }
+}
+
+.menu-bg {
+    background-color: #001f3f;
+    position: absolute;
+    top: -1000px;
+    left: -1000px;
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s ease;
+    z-index: 9;
+}
+
+.menu-bg.active {
+    border-radius: 0 0 80% 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .links {
     opacity: 0;
-    position: absolute;
+    position:absolute;
     top: 100%;
     left: 0;
     right: 0;
     text-align: center;
     z-index: 3;
+    transform: translateX(100px);
     transform: translateY(-20px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transition: opacity 0.8s ease, transform 1s ease;
     border-radius: 10px;
 }
 
@@ -119,6 +147,7 @@ a {
     color: white;
     font-size: 2rem;
     display: block;
+    margin: 10px 0;
 }
 
 @media (min-width: 768px) {
@@ -147,9 +176,11 @@ a {
     top: 30%;
     left: 0;
     right: 0;
-    z-index: 4;
+    z-index: 10;
     text-align: center;
     transform: translateY(0);
+    transform: translateX(0);
+    transition: opacity 0.8s ease, transform 1s ease;
 }
 
 .links.active a {
@@ -182,28 +213,27 @@ a {
 }
 
 .profile-image {
-    width: 50px; /* Ajusta este valor según necesites */
-    height: auto; /* Mantiene la proporción de la imagen */
-    border-radius: 50%; /* Crea un efecto de imagen circular */
-    cursor: pointer; /* Cambia el cursor a pointer para indicar interactividad */
-    margin-right: 20px; /* Asegura un margen derecho, ajusta según necesites */
+    width: 50px;
+    height: auto;
+    border-radius: 50%; 
+    cursor: pointer;
+    margin-right: 20px; 
 }
-
 .profile-image:hover {
     opacity: 0.75;
 }
 
 .dropdown-menu {
     position: absolute;
-    top: 100%; /* Ajusta según la altura de tu navbar */
+    top: 100%;
     right: 0;
-    background-color: #013567; /* Ajusta al color de fondo de tu preferencia */
-    border: 1px solid #4CB5AB; /* Añade un borde si lo deseas */
+    background-color: #013567; 
+    border: 1px solid #4CB5AB;
     border-radius: 5px;
     width: auto;
     min-width: 160px;
     box-sizing: border-box;
-    z-index: 100; /* Asegura que el menú esté por encima de otros elementos */
+    z-index: 100; 
 }
 
 .dropdown-item {
@@ -212,10 +242,10 @@ a {
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: left;
-    color: white; /* Color del texto */
-    padding: 10px 20px; /* Espaciado interno */
-    text-decoration: none; /* Quita el subrayado de los enlaces */
-    display: block; /* Asegura que cada elemento ocupe su propia línea */
+    color: white; 
+    padding: 10px 20px; 
+    text-decoration: none; 
+    display: block; 
     box-sizing: border-box;
     font-family: 'Gobold';
     cursor: pointer;
@@ -224,11 +254,4 @@ a {
 
 .dropdown-item:hover {
     background-color: #31828b;
-}
-
-@media (max-width: 768px) {
-    .dropdown-menu {
-        width: 100%;
-        right: auto;
-    }
 }

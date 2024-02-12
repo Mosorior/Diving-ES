@@ -5,6 +5,7 @@ import 'easymde/dist/easymde.min.css';
 import { marked } from 'marked';
 import Navbar from '../components/Navigation/Navbar';
 import { useAuth } from '../components/AuthContext'; // Asegúrate de que la ruta sea correcta
+import '../style/CrearPost.css';
 
 function CrearPost() {
     const [titulo, setTitulo] = useState('');

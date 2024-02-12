@@ -1,103 +1,75 @@
 import React, { useState, useRef, useEffect } from 'react';
-import '../../style/Navbar.css'; // Asegúrate de que la ruta sea correcta
+import '../../style/Navbar.css'; // Verifica que la ruta sea correcta
 import BurgerButton from './BurgerButton';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import LoginForm from '../LoginForm.jsx'; // Asegúrate de que la ruta sea correcta
-import RegisterForm from '../RegisterForm.jsx'; // Asegúrate de que la ruta sea correcta
-import { useAuth } from '../AuthContext'; // Asegúrate de que la ruta sea correcta
+import { Link, useNavigate } from 'react-router-dom';
+import LoginForm from '../LoginForm.jsx'; // Verifica que la ruta sea correcta
+import RegisterForm from '../RegisterForm.jsx'; // Verifica que la ruta sea correcta
+import { useAuth } from '../AuthContext'; // Verifica que la ruta sea correcta
 
 function Navbar() {
-  const [hovered, setHovered] = useState(false);
   const [clicked, setClicked] = useState(false);
-  const [animationFinished, setAnimationFinished] = useState(false);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
-  const location = useLocation();
   const { user, logout } = useAuth();
 
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showRegisterModal, setShowRegisterModal] = useState(false); // Agregado para manejar la visibilidad del modal de registro
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
 
   const handleOpenLoginModal = () => {
     setShowLoginModal(true);
-    setShowRegisterModal(false); // Asegúrate de que solo un modal esté visible a la vez
+    setShowRegisterModal(false);
   };
+
   const handleCloseModal = () => {
     setShowLoginModal(false);
     setShowRegisterModal(false);
   };
 
-  // Función para alternar entre modales
-  const toggleModal = (modalType) => {
-    if (modalType === 'register') {
-      setShowLoginModal(false);
-      setShowRegisterModal(true);
-    } else if (modalType === 'login') {
-      setShowLoginModal(true);
-      setShowRegisterModal(false);
-    }
-  };
-
-  useEffect(() => {
-    const animationEndHandler = () => {
-      setAnimationFinished(true);
-    };
-    document.addEventListener('animationend', animationEndHandler);
-    return () => {
-      document.removeEventListener('animationend', animationEndHandler);
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownVisible(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [dropdownRef]);
-
-  useEffect(() => {
-    if (location.pathname === '/home' && animationFinished) {
-      setClicked(true);
-    }
-  }, [location.pathname, animationFinished]);
-
   const handleLinkClick = (path) => {
-    setClicked(false);
+    setClicked(false); // Asegura que el menú se cierre al seleccionar un enlace
     navigate(path);
   };
 
   const handleLogoutClick = () => {
     logout();
-    window.location.reload(); // Recarga la página para reflejar el cambio de estado de autenticación
+    window.location.reload();
   };
 
   const toggleMenuVisibility = () => {
     setIsDropdownVisible(!isDropdownVisible);
   };
 
+  // Cierra el menú si se hace clic fuera de él
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownVisible(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdownRef]);
+
   return (
     <>
       <nav className="NavContainer">
-        <h2 className='Logo' onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onClick={() => handleLinkClick('/')}>
+      <div className={`menu-bg ${clicked ? 'active' : ''}`}></div>
+        <h2 className='Logo' onClick={() => handleLinkClick('/')}>
           Diving<b>ES</b>
         </h2>
         <div className='nav-content'>
-          <nav className={`links ${clicked ? 'active' : ''}`}>
+          <div className={`links ${clicked ? 'active' : ''}`}>
             <ul>
-              <li><Link to="/home">Inicio</Link></li>
-              <li><Link to="/mapa">Mapa</Link></li>
-              <li><Link to="/informacion">Información</Link></li>
-              <li><Link to="/calculadora">Calculadora</Link></li>
-              <li><Link to="/foro">Foro</Link></li>
+              <li><Link to="/home" onClick={() => setClicked(false)}>Inicio</Link></li>
+              <li><Link to="/mapa" onClick={() => setClicked(false)}>Mapa</Link></li>
+              <li><Link to="/informacion" onClick={() => setClicked(false)}>Información</Link></li>
+              <li><Link to="/calculadora" onClick={() => setClicked(false)}>Calculadora</Link></li>
+              <li><Link to="/foro" onClick={() => setClicked(false)}>Foro</Link></li>
             </ul>
-          </nav>
+          </div>
           {user ? (
             <div className="user-profile" ref={dropdownRef}>
               <img src={`http://localhost:3001/uploads/${user.username}/profile-img/profile.jpeg`} alt="Perfil" className="profile-image" onClick={toggleMenuVisibility} />
@@ -118,8 +90,8 @@ function Navbar() {
           <BurgerButton clicked={clicked} handleClick={() => setClicked(!clicked)} />
         </div>
       </nav>
-      {showLoginModal && <LoginForm onClose={handleCloseModal} toggleModal={toggleModal} />}
-      {showRegisterModal && <RegisterForm onClose={handleCloseModal} toggleModal={toggleModal} />}
+      {showLoginModal && <LoginForm onClose={handleCloseModal} />}
+      {showRegisterModal && <RegisterForm onClose={handleCloseModal} />}
     </>
   );
 }
