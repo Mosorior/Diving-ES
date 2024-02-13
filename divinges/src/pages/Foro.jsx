@@ -17,7 +17,11 @@ const Foro = () => {
     const navigate= useNavigate();
     
     const irAlForo = () => {
-        navigate('/foro'); // Esto redirigirá al usuario a /foro
+        navigate('/foro')
+    };
+
+    const handlePostClick = (postId) => {
+        navigate(`/post/${postId}`); // Redirige al usuario a la página de detalles del post
     };
 
     useEffect(() => {
@@ -40,8 +44,7 @@ const Foro = () => {
         };
 
         cargarPosts();
-    }, [etiqueta]); // Añade 'etiqueta' como dependencia para re-cargar posts cuando cambie
-
+    }, [etiqueta]);
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const day = date.getDate().toString().padStart(2, '0');
@@ -69,14 +72,14 @@ const Foro = () => {
     };
 
     return (
-        <div>
+        <div className='container-forum'>
             <Navbar />
             <div className="foro-container">
                 <h2 onClick={irAlForo}>Foro</h2>
                 <NavbarForo openLoginModal={openLoginModal} openRegisterModal={openRegisterModal} />
                 <div className="posts-list">
                     {posts.map(post => (
-                        <div key={post.id} className="post">
+                        <div key={post.id} className="post" onClick={() => handlePostClick(post.id)}>
                             <div className="post-header">
                                 <span className="post-tag">{post.tags}</span>
                                 <div className="post-title-author">

@@ -62,4 +62,60 @@ router.post('/crearpost', upload.array('imagenes'), (req, res) => {
     });
 });
 
+// Endpoint para obtener los detalles de un post específico por su ID
+router.get('/posts/:postId', (req, res) => {
+    const { postId } = req.params;
+
+    const selectPostQuery = 'SELECT * FROM foroposts WHERE id = ?';
+
+    db.get(selectPostQuery, [postId], (err, row) => {
+        if (err) {
+            console.error('Error al obtener el post:', err);
+            return res.status(500).send('Error al obtener el post');
+        }
+        if (row) {
+            res.status(200).json(row);
+        } else {
+            res.status(404).send('Post no encontrado');
+        }
+    });
+});
+
+// Endpoint para crear un nuevo comentario en un post.
+router.post('/posts/:postId/comments', (req, res) => {
+    const { postId } = req.params;
+    const { userId, content, date } = req.body;
+
+    const insertCommentQuery = 'INSERT INTO comments (content, postId, userId, date) VALUES (?, ?, ?, CURRENT_TIMESTAMP)';
+
+    db.run(insertCommentQuery, [content, postId, userId, date], function(err) {
+        if (err) {
+            console.error('Error al insertar el comentario en la base de datos:', err);
+            return res.status(500).send('Error al crear el comentario');
+        }
+        res.status(200).json({ mensaje: 'Comentario creado exitosamente', id: this.lastID });
+    });
+});
+
+// Endpoint para obtener los comentarios de un post específico.
+router.get('/posts/:postId/comments', (req, res) => {
+    const { postId } = req.params;
+
+    const selectCommentsQuery = `
+        SELECT comments.id, comments.content, comments.date, users.username AS userName
+        FROM comments
+        JOIN users ON comments.userId = users.id
+        WHERE comments.postId = ?
+        ORDER BY comments.date DESC
+    `;
+
+    db.all(selectCommentsQuery, [postId], (err, rows) => {
+        if (err) {
+            console.error('Error al obtener los comentarios:', err);
+            return res.status(500).send('Error al obtener los comentarios');
+        }
+        res.status(200).json(rows);
+    });
+});
+
 module.exports = router;

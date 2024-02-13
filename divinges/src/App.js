@@ -10,6 +10,7 @@ import Mapa from './pages/Mapa.jsx';
 import Calculadora from './pages/Calculadora.jsx';
 import Foro from './pages/Foro.jsx';
 import CrearPost from './pages/CrearPost.jsx';
+import PostDetails from './pages/PostDetails.jsx';
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
         <Route path="/foro" element={<Foro />} />
         <Route path="/crearpost" element={<CrearPost />} />
         <Route path="/foro/:etiqueta" element={<Foro />} />
+        <Route path="/post/:postId" element={<PostDetails />} />
       </Routes>
     </Router>
     </AuthProvider>

@@ -1,4 +1,10 @@
 /* Foro.css */
+.container-forum{
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 100vh;
+}
+
 .foro-container {
     background-color: #002244; /* Un azul oscuro como fondo */
     color: white; /* Texto en blanco para contraste */
