@@ -5,6 +5,9 @@ import NavbarForo from '../components/Navigation/NavbarForo';
 import CommentsList from '../components/CommentsList';
 import CommentForm from '../components/CommentForm';
 import { useAuth } from '../components/AuthContext'; // Asegúrate de que la ruta sea correcta
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
+import '../style/PostDetails.css'
 
 const PostDetails = () => {
     const { postId } = useParams();
@@ -43,26 +46,35 @@ const PostDetails = () => {
         loadComments(); // Carga inicial de los comentarios
     }, [postId]);
 
+    // Función para convertir Markdown a HTML seguro
+    const createMarkup = (markdown) => {
+        const rawMarkup = marked.parse(markdown);
+        const sanitizedMarkup = DOMPurify.sanitize(rawMarkup);
+        return { __html: sanitizedMarkup };
+    };
+
     return (
         <div>
             <Navbar />
             <NavbarForo />
-            <div className="post-details">
+            <div className="post-details-container"> {/* Usa esta clase para el contenedor principal */}
                 {post ? (
-                    <>
+                    <div className="post-content"> {/* Clase para el contenido del post */}
                         <h2>{post.title}</h2>
-                        <p>{post.content}</p>
-                        {/* Aquí puedes incluir más detalles del post */}
-                    </>
+                        <div dangerouslySetInnerHTML={createMarkup(post.content)} />
+                    </div>
                 ) : (
                     <p>Cargando detalles del post...</p>
                 )}
+                {user && user.userId && (
+                    <div className="comment-form"> {/* Clase para el formulario de comentarios */}
+                        <CommentForm postId={postId} onCommentPosted={loadComments} />
+                    </div>
+                )}
+                <div className="comments-list"> {/* Clase para la lista de comentarios */}
+                    <CommentsList postId={postId} comments={comments} />
+                </div>
             </div>
-            {/* Asegúrate de que user y user.userId existan antes de renderizar CommentForm */}
-            {user && user.userId && (
-                <CommentForm postId={postId} onCommentPosted={loadComments} />
-            )}
-            <CommentsList postId={postId} comments={comments} />
         </div>
     );
 };

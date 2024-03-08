@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../components/AuthContext'; // Asegúrate de que la ruta sea correcta
 
 const CommentForm = ({ postId, onCommentPosted }) => {
   const [content, setContent] = useState('');
   const { user } = useAuth(); // Utiliza useAuth para acceder al usuario autenticado
+  const textareaRef = useRef(null);
+  
+  useEffect(() => {
+    textareaRef.current.style.height = 'auto'; // Resetea la altura para obtener la altura correcta
+    textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px'; // Ajusta a la altura del contenido
+  }, [content]); // Dependencia: contenido del textarea
 
   const handleSubmit = async (e) => {
     e.preventDefault();

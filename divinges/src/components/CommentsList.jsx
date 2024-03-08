@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import '../style/PostDetails.css'; // Asegúrate de que la ruta al archivo CSS sea correcta
 
 const CommentsList = ({ postId }) => {
   const [comments, setComments] = useState([]);
@@ -27,12 +28,14 @@ const CommentsList = ({ postId }) => {
   };
 
   return (
-    <div>
+    <div className="comments-list">
       {comments.map((comment) => (
-        <div key={comment.id} style={{ marginBottom: '20px' }}>
-          <p><strong>{comment.userName}</strong></p> {/* Asume que `userName` es el campo retornado por tu API */}
-          <p>{comment.content}</p>
-          <p style={{ fontStyle: 'italic' }}>{formatDate(comment.date)}</p>
+        <div className="comment" key={comment.id}>
+          <div className="comment-info">
+            <p><strong>{comment.userName}</strong></p> {/* Usuario que publicó el comentario */}
+            <p className="comment-content">{comment.content}</p> {/* Contenido del comentario */}
+          </div>
+          <p className="comment-date">{formatDate(comment.date)}</p> {/* Fecha del comentario */}
         </div>
       ))}
     </div>
