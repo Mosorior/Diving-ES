@@ -1,14 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useAuth } from '../components/AuthContext'; // Asegúrate de que la ruta sea correcta
+import { useAuth } from './AuthContext'; // Asegúrate de que la ruta sea correcta
 
 const CommentForm = ({ postId, onCommentPosted }) => {
   const [content, setContent] = useState('');
   const { user } = useAuth(); // Utiliza useAuth para acceder al usuario autenticado
   const textareaRef = useRef(null);
-  
+
   useEffect(() => {
-    textareaRef.current.style.height = 'auto'; // Resetea la altura para obtener la altura correcta
-    textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px'; // Ajusta a la altura del contenido
+    // Solo ajusta el estilo si textareaRef.current está disponible
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'; // Resetea la altura para obtener la altura correcta
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // Ajusta a la altura del contenido
+    }
   }, [content]); // Dependencia: contenido del textarea
 
   const handleSubmit = async (e) => {
@@ -27,17 +30,15 @@ const CommentForm = ({ postId, onCommentPosted }) => {
           // Opcionalmente, puedes incluir el token en los headers si tu backend requiere autenticación
           'Authorization': `Bearer ${user.token}`
         },
-        body: JSON.stringify({ 
-          content, 
-          userId: user.userId // Usa el userId del usuario autenticado
-        }),
+        body: JSON.stringify({ content, userId: user.userId }),
       });
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const result = await response.json();
       if (result) {
-        onCommentPosted(); // Llama a esta función para actualizar la lista de comentarios en el componente padre
+        // Llama a esta función para actualizar la lista de comentarios en el componente padre
+        if (onCommentPosted) onCommentPosted(); // Asegúrate de que esta función esté definida
         setContent('');
       }
     } catch (error) {
@@ -48,6 +49,7 @@ const CommentForm = ({ postId, onCommentPosted }) => {
   return (
     <form onSubmit={handleSubmit}>
       <textarea
+        ref={textareaRef}
         value={content}
         onChange={(e) => setContent(e.target.value)}
         required

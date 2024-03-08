@@ -147,3 +147,6 @@ h2:hover{
     text-align: right;
     margin-right: 40px;
 }
+.post{
+    cursor: pointer;
+}
