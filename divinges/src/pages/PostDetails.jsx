@@ -1,58 +1,64 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useAuth } from '../components/AuthContext';
-import CommentForm from '../components/CommentForm';
-import CommentsList from '../components/CommentsList';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import AddComment from '../components/Comments/AddComment';
 import Navbar from '../components/Navigation/Navbar';
 
 const PostDetails = () => {
+  const { postId } = useParams();
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
-  const { postId } = useParams();
-  const { user } = useAuth(); // Utilizamos el hook useAuth para acceder al estado de autenticación
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchPostDetails = async () => {
-      try {
-        const response = await fetch(`http://localhost:3001/posts/${postId}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        setPost(data.post);
-        setComments(data.comments); // Asumiendo que tu API devuelve los comentarios con los detalles del post
-      } catch (error) {
-        console.error("Error loading post details:", error);
+    const fetchPost = async () => {
+      // Aquí se utiliza `await` dentro de una función `async` correctamente.
+      const response = await fetch(`http://localhost:3001/api/posts/${postId}`);
+      if (!response.ok) {
+        console.error('Error fetching post:', response.statusText);
+        return;
       }
+      const postData = await response.json();
+      setPost(postData);
     };
 
-    fetchPostDetails();
-  }, [postId]);
+    fetchPost();
 
-  const handleBackToForum = () => {
-    navigate('/foro');
+    const fetchComments = async () => {
+      const response = await fetch(`http://localhost:3001/api/posts/${postId}/comments`);
+      if (!response.ok) {
+          console.error('Error fetching comments:', response.statusText);
+          return;
+      }
+      const commentsData = await response.json();
+      setComments(commentsData);
   };
 
-  const isAuthenticated = user && user.isLoggedIn;
+  fetchComments();
+}, [postId]);
+
+
+  if (!post) {
+    return <div>Cargando post...</div>;
+  }
 
   return (
-    <div className="post-details-container">
+    <div>
       <Navbar />
-      <button onClick={handleBackToForum}>Volver al foro</button>
-      {post && (
-        <div>
-          <h2>{post.title}</h2>
-          <p>{post.content}</p>
-          {/* Aquí podrías incluir más detalles del post como el autor, fecha, etc. */}
-        </div>
-      )}
-      <CommentsList comments={comments} />
-      {isAuthenticated ? (
-        <CommentForm postId={postId} setComments={setComments} />
-      ) : (
-        <p>Debes iniciar sesión para poder comentar.</p>
-      )}
+      <h1>{post.title}</h1>
+      <p>Autor: {post.author.username}</p>
+      <p>Fecha: {post.date}</p>
+      <img src={post.imageUrl} alt={post.title} />
+      <p>{post.content}</p>
+
+      <h2>Comentarios</h2>
+      {comments.map((comment) => (
+  <div key={comment.id}>
+    <p>Comentario: {comment.content}</p>
+    <p>Autor: {comment.userName || 'Anónimo'}</p>
+    <p>Fecha: {comment.date}</p>
+  </div>
+))}
+
+      <AddComment postId={postId} />
     </div>
   );
 };

@@ -24,7 +24,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Endpoint para obtener todos los posts
-router.get('/posts', (req, res) => {
+router.get('/', (req, res) => {
     const { tag } = req.query; // Obtiene el parámetro 'tag' de la consulta, si existe
     let selectPostsQuery = 'SELECT * FROM foroposts';
     const params = [];
@@ -50,8 +50,10 @@ router.get('/posts', (req, res) => {
 router.post('/crearpost', upload.array('imagenes'), (req, res) => {
     const { titulo, cuerpo, author, date, tags } = req.body; // Asegúrate de incluir 'tags' aquí
     const imagenes = req.files.map(file => `/uploads/posts/${file.filename}`);
-    const insertPostQuery = 'INSERT INTO foroposts (title, content, author, date, images, tags) VALUES (?, ?, ?, ?, ?, ?)'; // Asegúrate de que la consulta SQL incluya 'tags'
     const imagesPath = imagenes.join(';'); 
+
+    // <!-- NEW -->
+    const insertPostQuery = 'INSERT INTO foroposts (title, content, author, date, images, tags) VALUES (?, ?, ?, ?, ?, ?)';
 
     db.run(insertPostQuery, [titulo, cuerpo, author, date, imagesPath, tags], function(err) {
         if (err) {
@@ -63,32 +65,46 @@ router.post('/crearpost', upload.array('imagenes'), (req, res) => {
 });
 
 // Endpoint para obtener los detalles de un post específico por su ID
-router.get('/posts/:postId', (req, res) => {
+router.get('/:postId', (req, res) => {
     const { postId } = req.params;
-
+  
     const selectPostQuery = 'SELECT * FROM foroposts WHERE id = ?';
 
+    const selectAuthorQuery = 'SELECT * FROM users WHERE username = ?';
+  
     db.get(selectPostQuery, [postId], (err, row) => {
-        if (err) {
-            console.error('Error al obtener el post:', err);
-            return res.status(500).send('Error al obtener el post');
-        }
-        if (row) {
-            res.status(200).json(row);
-        } else {
-            res.status(404).send('Post no encontrado');
-        }
+      if (err) {
+        console.error('Error al obtener el post:', err);
+        return res.status(500).send('Error al obtener el post');
+      }
+      if (row) {
+        const tags = row.tags ? row.tags.split(',').map(tag => tag.trim()) : [];
+  
+        db.get(selectAuthorQuery, [row.author], (err, authorRow) => {
+          if (err) {
+            console.error('Error al obtener el autor:', err);
+            return res.status(500).send('Error al obtener el autor');
+          }
+          const postDetails = { ...row, author: authorRow, tags };
+          res.status(200).json(postDetails);
+        });
+      } else {
+        res.status(404).send('Post no encontrado');
+      }
     });
-});
+  });
 
 // Endpoint para crear un nuevo comentario en un post.
-router.post('/posts/:postId/comments', (req, res) => {
+router.post('/:postId/comments', async (req, res) => {
     const { postId } = req.params;
-    const { userId, content, date } = req.body;
+    const { content, userId } = req.body; // `userId` puede ser null para comentarios anónimos o contener el ID del usuario
 
-    const insertCommentQuery = 'INSERT INTO comments (content, postId, userId, date) VALUES (?, ?, ?, CURRENT_TIMESTAMP)';
+    const insertCommentQuery = `
+        INSERT INTO comments (content, postId, userId, date)
+        VALUES (?, ?, ?, CURRENT_TIMESTAMP)
+    `;
 
-    db.run(insertCommentQuery, [content, postId, userId, date], function(err) {
+    db.run(insertCommentQuery, [content, postId, userId], function(err) {
         if (err) {
             console.error('Error al insertar el comentario en la base de datos:', err);
             return res.status(500).send('Error al crear el comentario');
@@ -98,24 +114,25 @@ router.post('/posts/:postId/comments', (req, res) => {
 });
 
 // Endpoint para obtener los comentarios de un post específico.
-router.get('/posts/:postId/comments', (req, res) => {
+router.get('/:postId/comments', (req, res) => {
     const { postId } = req.params;
 
     const selectCommentsQuery = `
-        SELECT comments.id, comments.content, comments.date, users.username AS userName
+        SELECT comments.*, users.username AS userName
         FROM comments
-        JOIN users ON comments.userId = users.id
+        LEFT JOIN users ON comments.userId = users.id
         WHERE comments.postId = ?
         ORDER BY comments.date DESC
     `;
 
-    db.all(selectCommentsQuery, [postId], (err, rows) => {
+    db.all(selectCommentsQuery, [postId], (err, comments) => {
         if (err) {
             console.error('Error al obtener los comentarios:', err);
             return res.status(500).send('Error al obtener los comentarios');
         }
-        res.status(200).json(rows);
+        res.status(200).json(comments);
     });
 });
+
 
 module.exports = router;

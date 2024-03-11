@@ -13,7 +13,7 @@ app.use('/uploads', express.static('uploads'));
 
 // Rutas
 app.use(userRoutes);
-app.use(postRoutes);
+app.use('/api/posts', postRoutes);
 
 app.listen(port, () => {
     console.log(`Servidor corriendo en http://localhost:${port}`);
