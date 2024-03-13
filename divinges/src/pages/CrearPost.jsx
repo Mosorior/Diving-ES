@@ -49,10 +49,6 @@ function CrearPost() {
         formData.append('author', user.username); // Asume que el username está disponible en el estado del usuario
         formData.append('tags', tags);
         formData.append('date', fechaActual); // Añade la fecha actual
-        /*imagenes.forEach(imagen => {
-            formData.append('imagenes', imagen);
-        }
-        );*/
 
         try {
             const res = await fetch('http://localhost:3001/crearpost', {
@@ -73,10 +69,6 @@ function CrearPost() {
         }
     };
 
-    /*const handleImageChange = (e) => {
-        setImagenes([...e.target.files]);
-    };*/
-
     return (
         <div>
             <Navbar />
@@ -95,14 +87,6 @@ function CrearPost() {
                     <textarea id="mde" ref={mdeRef}></textarea>
                 </div>
                 <div>
-                    {/* 
-                    <label>Subir Imágenes:</label>
-                    <input
-                        type="file"
-                        multiple
-                        onChange={handleImageChange}
-                    />
-                    */}
                      <label>Tags:</label>
                     <select className="tag-select" name="tags" value={tags} onChange={(e) => setTags(e.target.value)}>
                         <option value="general">General</option>

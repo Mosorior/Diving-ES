@@ -1,120 +1,66 @@
+/* PostDetails.css */
 .post-details-container {
-    padding: 20px;
-    text-align: center;
-    color: #fff;
-    max-width: 800px; /* Ajusta este valor según prefieras */
-    margin: 0 auto; /* Centrado */
-    overflow-y: auto; /* Permite el desplazamiento vertical si es necesario */
-  }
-  
-  .post-content {
-    background-color: #002d50; /* Fondo para el contenido del post */
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px; /* Espaciado entre el post y el formulario de comentarios */
-    color: #ffffff; /* Texto blanco para el contenido del post */
-  }
-  
-  .comment-form {
-    background-color: #004366; /* Fondo para el formulario de comentarios */
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px; /* Espaciado entre el formulario de comentarios y la lista de comentarios */
-  }
-  
-  .comment-form textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0; /* Espaciado */
-    border-radius: 5px;
-    border: 1px solid #69ecdf;
-    background-color: #004366;
-    color: #fff;
-  }
-  
-  .comment-form button {
-    padding: 10px 20px;
-    background-color: #4cb5ab;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: block; /* Asegura que se muestre en su propia línea */
-    width: 50%; /* Ancho uniforme */
-    margin: 10px auto; /* Centrado */
-  }
-  
-  .comment-form button:hover {
-    background-color: #31828b;
-  }
-  
-  .comments-list {
-    background-color: #002d50; /* Fondo para los comentarios */
-    padding: 20px;
-    border-radius: 10px;
-    color: #ffffff; /* Texto blanco para los comentarios */
-  }
-  
-  .comment {
-    margin-bottom: 15px; /* Espaciado entre comentarios */
-  }
-  
-  @media (min-width: 768px) {
-    .post-details-container {
-      padding: 20px 40px; /* Más espacio lateral en dispositivos más grandes */
-    }
-  }
-  
-.post-details-container {
-    padding: 20px;
-    color: #fff;
-    max-width: 800px; /* Ajusta este valor según prefieras */
-    margin: 20px auto; /* Centrado con un margen superior e inferior */
+  background-color: #002244; /* Un azul oscuro como fondo */
+  color: white; /* Texto en blanco para contraste */
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px auto;
+  width: 95%;
+  max-width: 950px; /* Ajuste de ancho máximo para mantener la coherencia con Foro.css */
+  text-align: left; /* Alineación de texto a la izquierda para el contenido del post */
 }
 
-/* Estilos para cada comentario */
+.post-title {
+  color: #69ecdf; /* Un color azul claro para el título del post */
+  margin-bottom: 10px; /* Espacio después del título */
+}
+
+.post-metadata {
+  font-size: 0.9rem; /* Tamaño de fuente más pequeño para metadatos */
+  color: #ddd; /* Color de texto más tenue para metadatos */
+  margin-bottom: 20px; /* Espacio después de los metadatos */
+}
+
+.post-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover; /* Asegura que la imagen cubra el espacio asignado sin perder proporciones */
+  border-radius: 5px;
+  margin-bottom: 20px; /* Espacio después de la imagen */
+}
+
+.post-content {
+  margin-bottom: 30px; /* Espacio antes de la sección de comentarios */
+  font-size: 1rem; /* Tamaño de fuente para el contenido */
+  color: #EEE; /* Color de texto para el contenido */
+}
+
+.comments-section {
+  margin-top: 40px; /* Espacio antes de los comentarios */
+}
+
 .comment {
-    display: flex;
-    justify-content: space-between; /* Separa el contenido y la fecha */
-    margin-bottom: 15px; /* Espaciado entre comentarios */
-    align-items: flex-start; /* Alinea el contenido al principio */
-  }
-  
-  .comment-content {
-    font-size: 0.9em;
-    font-weight: 500;
-    font-family: 'Gobold';
-    max-width: 80%; /* Ajusta según necesites para dejar espacio a la fecha */
-  }
-  
-  .comment-info {
-    text-align: left; /* Alinea la información del usuario y fecha a la izquierda */
-  }
-  
-  .comment-date {
-    text-align: right; /* Alinea la fecha a la derecha */
-    padding-left: 20px; /* Asegura un espacio entre el comentario y la fecha */
-  }
-
-  .comment-form textarea{
-    width: 50%;
+  background-color: #013567; /* Fondo más claro para cada comentario */
   padding: 10px;
-  margin: 10px auto; /* Centrado */
-  display: block;
+  margin-bottom: 15px; /* Espacio entre comentarios */
   border-radius: 5px;
-  border: 1px solid #69ecdf;
-  background-color: #004366;
-  color: #fff;
-  }
+}
 
-  .comment-form button {
-    padding: 10px 20px;
-  background-color: #4cb5ab;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 10px auto; /* Centrado */
-  display: block; /* Asegura que se muestre en su propia línea */
-  width: 50%; /* Ancho uniforme */
-  }
+.comment-content {
+  font-size: 0.95rem; /* Tamaño de fuente para el contenido del comentario */
+  color: #EEE; /* Color de texto para el comentario */
+  margin-bottom: 5px; /* Espacio antes del autor del comentario */
+}
+
+.comment-author {
+  font-size: 0.9rem; /* Tamaño de fuente más pequeño para el autor */
+  color: #BBB; /* Color de texto más tenue para el autor */
+}
+
+.comment-date {
+  font-size: 0.8rem; /* Tamaño de fuente más pequeño para la fecha */
+  color: #BBB; /* Color de texto más tenue para la fecha */
+  text-align: right;
+}
+
+/* Añade cualquier estilo adicional que consideres necesario */

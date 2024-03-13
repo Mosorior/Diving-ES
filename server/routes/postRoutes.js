@@ -122,7 +122,7 @@ router.get('/:postId/comments', (req, res) => {
         FROM comments
         LEFT JOIN users ON comments.userId = users.id
         WHERE comments.postId = ?
-        ORDER BY comments.date DESC
+        ORDER BY comments.date ASC
     `;
 
     db.all(selectCommentsQuery, [postId], (err, comments) => {

@@ -12,7 +12,7 @@ const AddComment = ({ postId }) => {
     const comment = {
       content,
       // Si hay un usuario logueado, usa su ID. Si no, el campo userId será null (usuario anónimo)
-      userId: user ? user.id : null
+      userId: user ? user.userId : null
     };
 
     try {

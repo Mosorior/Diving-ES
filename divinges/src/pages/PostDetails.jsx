@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import AddComment from '../components/Comments/AddComment';
 import Navbar from '../components/Navigation/Navbar';
+import DOMPurify from 'dompurify';
+import { marked } from 'marked';
+import '../style/PostDetails.css';
 
 const PostDetails = () => {
   const { postId } = useParams();
@@ -10,7 +13,6 @@ const PostDetails = () => {
 
   useEffect(() => {
     const fetchPost = async () => {
-      // Aquí se utiliza `await` dentro de una función `async` correctamente.
       const response = await fetch(`http://localhost:3001/api/posts/${postId}`);
       if (!response.ok) {
         console.error('Error fetching post:', response.statusText);
@@ -25,40 +27,46 @@ const PostDetails = () => {
     const fetchComments = async () => {
       const response = await fetch(`http://localhost:3001/api/posts/${postId}/comments`);
       if (!response.ok) {
-          console.error('Error fetching comments:', response.statusText);
-          return;
+        console.error('Error fetching comments:', response.statusText);
+        return;
       }
       const commentsData = await response.json();
       setComments(commentsData);
-  };
+    };
 
-  fetchComments();
-}, [postId]);
-
+    fetchComments();
+  }, [postId]);
 
   if (!post) {
     return <div>Cargando post...</div>;
   }
 
+  // Convert Markdown content to HTML and sanitize it
+  const postContentHtml = post.content ? DOMPurify.sanitize(marked(post.content)) : '';
+
   return (
     <div>
       <Navbar />
-      <h1>{post.title}</h1>
-      <p>Autor: {post.author.username}</p>
-      <p>Fecha: {post.date}</p>
-      <img src={post.imageUrl} alt={post.title} />
-      <p>{post.content}</p>
+      <div className='post-details-container'>
+        <h1 className="post-title">{post.title}</h1>
+        <div className="post-metadata">
+          <p>Autor: <span className="post-author">{post.author.username}</span></p>
+          <p>Fecha: <span className="post-date">{post.date}</span></p>
+        </div>
+        <img src={post.imageUrl} alt={post.title} className="post-image" />
+        <div className="post-content" dangerouslySetInnerHTML={{ __html: postContentHtml }}></div>
 
-      <h2>Comentarios</h2>
-      {comments.map((comment) => (
-  <div key={comment.id}>
-    <p>Comentario: {comment.content}</p>
-    <p>Autor: {comment.userName || 'Anónimo'}</p>
-    <p>Fecha: {comment.date}</p>
-  </div>
-))}
+        <h2 className="comments-section">Comentarios</h2>
+        {comments.map((comment) => (
+          <div key={comment.id} className="comment">
+            <div className="comment-content">Comentario: {comment.content}</div>
+            <div className="comment-author">Autor: {comment.userName || 'Anónimo'}</div>
+            <div className="comment-date">Fecha: {comment.date}</div>
+          </div>
+        ))}
 
-      <AddComment postId={postId} />
+        <AddComment postId={postId} />
+      </div>
     </div>
   );
 };
