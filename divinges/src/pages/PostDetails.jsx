@@ -53,7 +53,6 @@ const PostDetails = () => {
           <p>Autor: <span className="post-author">{post.author.username}</span></p>
           <p>Fecha: <span className="post-date">{post.date}</span></p>
         </div>
-        <img src={post.imageUrl} alt={post.title} className="post-image" />
         <div className="post-content" dangerouslySetInnerHTML={{ __html: postContentHtml }}></div>
 
         <h2 className="comments-section">Comentarios</h2>

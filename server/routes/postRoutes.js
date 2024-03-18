@@ -47,15 +47,12 @@ router.get('/', (req, res) => {
 });
 
 // Endpoint para crear un nuevo post.
-router.post('/crearpost', upload.array('imagenes'), (req, res) => {
-    const { titulo, cuerpo, author, date, tags } = req.body; // Asegúrate de incluir 'tags' aquí
-    const imagenes = req.files.map(file => `/uploads/posts/${file.filename}`);
-    const imagesPath = imagenes.join(';'); 
+router.post('/crearpost', (req, res) => {
+    const { titulo, cuerpo, author, date, tags } = req.body;
 
-    // <!-- NEW -->
-    const insertPostQuery = 'INSERT INTO foroposts (title, content, author, date, images, tags) VALUES (?, ?, ?, ?, ?, ?)';
+    const insertPostQuery = 'INSERT INTO foroposts (title, content, author, date, tags) VALUES (?, ?, ?, ?, ?)';
 
-    db.run(insertPostQuery, [titulo, cuerpo, author, date, imagesPath, tags], function(err) {
+    db.run(insertPostQuery, [titulo, cuerpo, author, date, tags], function(err) {
         if (err) {
             console.error('Error al insertar el post en la base de datos:', err);
             return res.status(500).send('Error al crear el post');

@@ -43,32 +43,36 @@ function CrearPost() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const fechaActual = new Date().toISOString(); // Formato ISO para la fecha
-        const formData = new FormData();
-        formData.append('titulo', titulo);
-        formData.append('cuerpo', simpleMdeRef.current.value());
-        formData.append('author', user.username); // Asume que el username está disponible en el estado del usuario
-        formData.append('tags', tags);
-        formData.append('date', fechaActual); // Añade la fecha actual
-
+        const cuerpo = simpleMdeRef.current.value(); // Asegúrate de obtener correctamente el valor del editor Markdown
+    
+        const postData = {
+            titulo,
+            cuerpo,
+            author: user.username,
+            tags,
+            date: fechaActual,
+        };
+    
         try {
-            const res = await fetch('http://localhost:3001/crearpost', {
+            const res = await fetch('http://localhost:3001/api/posts/crearpost', {
                 method: 'POST',
-                body: formData,
+                body: JSON.stringify(postData),
                 headers: {
-                    'Authorization': `Bearer ${user.token}`, // Asegúrate de que tu backend espera un header de autorización
+                    'Content-Type': 'application/json', // Indica que el cuerpo de la solicitud es un JSON
+                    'Authorization': `Bearer ${user.token}`,
                 },
             });
-
+    
             if (!res.ok) {
                 throw new Error('Error al crear el post');
             }
-
+    
             navigate('/foro'); // Redirigir al foro después de crear el post
         } catch (error) {
             console.error("Error al crear el post: ", error);
         }
     };
-
+    
     return (
         <div>
             <Navbar />

@@ -21,18 +21,18 @@
   margin-bottom: 20px; /* Espacio después de los metadatos */
 }
 
-.post-image {
-  width: 100%;
-  max-height: 400px;
-  object-fit: cover; /* Asegura que la imagen cubra el espacio asignado sin perder proporciones */
-  border-radius: 5px;
-  margin-bottom: 20px; /* Espacio después de la imagen */
-}
-
 .post-content {
   margin-bottom: 30px; /* Espacio antes de la sección de comentarios */
   font-size: 1rem; /* Tamaño de fuente para el contenido */
   color: #EEE; /* Color de texto para el contenido */
+}
+
+.post-content img {
+  max-width: 100%;
+  height: auto;
+  display: block; /* Opcional: Asegura que la imagen no tenga elementos inline a su lado */
+  margin: 0 auto; /* Centra la imagen si es más pequeña que el ancho del contenedor */
+  border-radius: 5px; /* Opcional: Si deseas bordes redondeados en todas las imágenes */
 }
 
 .comments-section {
