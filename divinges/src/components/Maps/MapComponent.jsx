@@ -33,7 +33,7 @@ function MapComponent({ diveSpots, onMarkerClick, showDetails, toggleDetails }) 
           >
             <Popup>
               <div>
-                <h2>{diveSpot.name}</h2>
+                <h2 className='diveSpotName'>{diveSpot.name}</h2>
                 <p>{diveSpot.description}</p>
                 {/* Cambia el texto del botón y maneja su clic */}
                 <button onClick={() => { onMarkerClick(diveSpot); toggleDetails(); }}>
