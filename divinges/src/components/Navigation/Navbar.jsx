@@ -65,7 +65,6 @@ function Navbar() {
             <ul>
               <li><Link to="/home" onClick={() => setClicked(false)}>Inicio</Link></li>
               <li><Link to="/mapa" onClick={() => setClicked(false)}>Mapa</Link></li>
-              <li><Link to="/informacion" onClick={() => setClicked(false)}>Información</Link></li>
               <li><Link to="/calculadora" onClick={() => setClicked(false)}>Calculadora</Link></li>
               <li><Link to="/foro" onClick={() => setClicked(false)}>Foro</Link></li>
             </ul>
