@@ -49,6 +49,16 @@
     background-color: #004366;
     color: #fff;
   }
+  form input[type="password"]{
+    width: 100%;
+    font-size: large;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #69ecdf;
+    background-color: #004366;
+    color: #fff;
+  }
   
   form input[type="file"] {
     background-color: #31828b;

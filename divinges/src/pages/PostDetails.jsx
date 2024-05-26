@@ -24,18 +24,19 @@ const PostDetails = () => {
 
     fetchPost();
 
-    const fetchComments = async () => {
-      const response = await fetch(`http://localhost:3001/api/posts/${postId}/comments`);
-      if (!response.ok) {
-        console.error('Error fetching comments:', response.statusText);
-        return;
-      }
-      const commentsData = await response.json();
-      setComments(commentsData);
-    };
-
     fetchComments();
   }, [postId]);
+
+  // Función para obtener los comentarios
+  const fetchComments = async () => {
+    const response = await fetch(`http://localhost:3001/api/posts/${postId}/comments`);
+    if (!response.ok) {
+      console.error('Error fetching comments:', response.statusText);
+      return;
+    }
+    const commentsData = await response.json();
+    setComments(commentsData);
+  };
 
   if (!post) {
     return <div>Cargando post...</div>;
@@ -44,6 +45,13 @@ const PostDetails = () => {
   // Convert Markdown content to HTML and sanitize it
   const postContentHtml = post.content ? DOMPurify.sanitize(marked(post.content)) : '';
 
+  // Función para formatear la fecha en el formato deseado
+  const formatDateTime = (dateTimeString) => {
+    const date = new Date(dateTimeString);
+    const formattedDate = `${date.getDate().toString().padStart(2, '0')}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+    return formattedDate;
+  };
+
   return (
     <div>
       <Navbar />
@@ -51,7 +59,7 @@ const PostDetails = () => {
         <h1 className="post-title">{post.title}</h1>
         <div className="post-metadata">
           <p>Autor: <span className="post-author">{post.author.username}</span></p>
-          <p>Fecha: <span className="post-date">{post.date}</span></p>
+          <p>Fecha: <span className="post-date">{formatDateTime(post.date)}</span></p>
         </div>
         <div className="post-content" dangerouslySetInnerHTML={{ __html: postContentHtml }}></div>
 
@@ -60,11 +68,11 @@ const PostDetails = () => {
           <div key={comment.id} className="comment">
             <div className="comment-content">Comentario: {comment.content}</div>
             <div className="comment-author">Autor: {comment.userName || 'Anónimo'}</div>
-            <div className="comment-date">Fecha: {comment.date}</div>
+            <div className="comment-date">Fecha: {formatDateTime(comment.date)}</div>
           </div>
         ))}
 
-        <AddComment postId={postId} />
+        <AddComment postId={postId} onCommentAdded={fetchComments} />
       </div>
     </div>
   );

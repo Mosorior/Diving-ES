@@ -44,6 +44,7 @@ const LoginForm = ({ onClose, toggleModal }) => {
                 {error && <p className="error">{error}</p>}
                 <h2>Iniciar Sesión</h2>
                 <form onSubmit={handleSubmit}>
+                    
                     <div className="form-group">
                         <label htmlFor="username">Nombre de Usuario:</label>
                         <input

@@ -74,7 +74,6 @@ function Navbar() {
               <img src={`http://localhost:3001/uploads/${user.username}/profile-img/profile.jpeg`} alt="Perfil" className="profile-image" onClick={toggleMenuVisibility} />
               {isDropdownVisible && (
                 <div className="dropdown-menu">
-                  <Link to="/perfil" className="dropdown-item">Perfil</Link>
                   <div onClick={handleLogoutClick} className="dropdown-item">Cerrar Sesión</div>
                 </div>
               )}
