@@ -5,6 +5,7 @@ const sharp = require('sharp');
 const path = require('path');
 const fs = require('fs');
 const db = require('../config/db'); // Asegúrate de que la ruta sea correcta para tu estructura de proyecto
+const multer = require('multer');
 
 const router = express.Router();
 const saltRounds = 10;
@@ -17,15 +18,14 @@ const createFolder = (folder) => {
     }
 };
 
-// Middleware para manejar la subida de imágenes
-const multer = require('multer');
+// Configuración de multer para manejar la subida de imágenes
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const username = req.body.username; // Asegúrate de que el nombre de usuario esté en el cuerpo de la solicitud
+        const username = req.body.username;
         if (!username) {
             return cb(new Error('Nombre de usuario no proporcionado'));
         }
-        const folder = path.join(__dirname, '..', 'uploads', username, 'profile-img'); // Ajusta la ruta según tu estructura de proyecto
+        const folder = path.join(__dirname, '..', 'uploads', username, 'profile-img');
         createFolder(folder);
         cb(null, folder);
     },
@@ -39,37 +39,41 @@ const upload = multer({ storage: storage });
 router.post('/register', upload.single('profileImage'), async (req, res) => {
     const { username, email, password } = req.body;
 
+    if (!username || !email || !password) {
+        return res.status(400).json({ message: 'Todos los campos son obligatorios' });
+    }
+
     const userExistsQuery = 'SELECT * FROM users WHERE username = ? OR email = ?';
     db.get(userExistsQuery, [username, email], async (err, row) => {
         if (err) {
-            return res.status(500).send('Error en la base de datos');
+            return res.status(500).json({ message: 'Error en la base de datos' });
         }
         if (row) {
-            return res.status(409).send('El usuario o correo electrónico ya está registrado');
+            return res.status(409).json({ message: 'El usuario o correo electrónico ya está registrado' });
         }
 
-        const hash = await bcrypt.hash(password, saltRounds);
-        const defaultImagePath = path.join(__dirname, '..', 'default', 'img.png'); // Asegúrate de que este sea el archivo correcto y la ruta sea correcta
-        const userImageDir = path.join(__dirname, '..', 'uploads', username, 'profile-img');
-        const userImagePath = path.join(userImageDir, 'profile.jpeg'); // Cambiando a formato .jpeg
-
-        createFolder(userImageDir);
-
         try {
+            const hash = await bcrypt.hash(password, saltRounds);
+            const defaultImagePath = path.join(__dirname, '..', 'default', 'img.png');
+            const userImageDir = path.join(__dirname, '..', 'uploads', username, 'profile-img');
+            const userImagePath = path.join(userImageDir, 'profile.jpg');
+
+            createFolder(userImageDir);
+
             await sharp(defaultImagePath)
-                .jpeg({ quality: 80 }) // Convierte a JPEG con calidad del 80%
+                .jpeg({ quality: 80 })
                 .toFile(userImagePath);
 
             const insertUserQuery = 'INSERT INTO users (username, email, password) VALUES (?, ?, ?)';
             db.run(insertUserQuery, [username, email, hash], function(err) {
                 if (err) {
-                    return res.status(500).send('Error al registrar el usuario');
+                    return res.status(500).json({ message: 'Error al registrar el usuario' });
                 }
                 res.status(200).json({ userId: this.lastID });
             });
         } catch (error) {
             console.error('Error al procesar la imagen de perfil:', error);
-            return res.status(500).json({ error: 'Error al procesar la imagen de perfil' });
+            return res.status(500).json({ message: 'Error al procesar la imagen de perfil' });
         }
     });
 });
@@ -77,26 +81,35 @@ router.post('/register', upload.single('profileImage'), async (req, res) => {
 // Endpoint para iniciar sesión
 router.post('/login', (req, res) => {
     const { username, password } = req.body;
+
+    if (!username || !password) {
+        return res.status(400).json({ message: 'Todos los campos son obligatorios' });
+    }
+
     const findUserQuery = 'SELECT * FROM users WHERE username = ?';
     db.get(findUserQuery, [username], (err, user) => {
         if (err) {
-            return res.status(500).send('Error en la base de datos');
+            console.error('Database error:', err);
+            return res.status(500).json({ message: 'Error en la base de datos' });
         }
         if (!user) {
-            return res.status(404).send('Usuario no encontrado');
+            return res.status(404).json({ message: 'Usuario no encontrado' });
         }
 
         bcrypt.compare(password, user.password, (err, result) => {
+            if (err) {
+                console.error('Bcrypt error:', err);
+                return res.status(500).json({ message: 'Error en la comparación de contraseñas' });
+            }
             if (result) {
                 const token = jwt.sign(
                     { userId: user.id, username: user.username },
                     JWT_SECRET,
                     { expiresIn: '1h' }
                 );
-
                 res.json({ token, username: user.username, userId: user.id });
             } else {
-                res.status(401).send('Contraseña incorrecta');
+                res.status(401).json({ message: 'Contraseña incorrecta' });
             }
         });
     });

@@ -1,5 +1,5 @@
 
-const BASE_URL = 'http://localhost:3001/api/posts';
+const BASE_URL = '${process.env.REACT_APP_API_URL}/api/posts';
 
 export const getCommentsByPostId = async (postId) => {
   const response = await fetch(`${BASE_URL}/${postId}/comments`);

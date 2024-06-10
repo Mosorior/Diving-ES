@@ -70,26 +70,26 @@ router.get('/:postId', (req, res) => {
     const selectAuthorQuery = 'SELECT * FROM users WHERE username = ?';
   
     db.get(selectPostQuery, [postId], (err, row) => {
-      if (err) {
-        console.error('Error al obtener el post:', err);
-        return res.status(500).send('Error al obtener el post');
-      }
-      if (row) {
-        const tags = row.tags ? row.tags.split(',').map(tag => tag.trim()) : [];
+        if (err) {
+            console.error('Error al obtener el post:', err);
+            return res.status(500).send('Error al obtener el post');
+        }
+        if (row) {
+            const tags = row.tags ? row.tags.split(',').map(tag => tag.trim()) : [];
   
-        db.get(selectAuthorQuery, [row.author], (err, authorRow) => {
-          if (err) {
-            console.error('Error al obtener el autor:', err);
-            return res.status(500).send('Error al obtener el autor');
-          }
-          const postDetails = { ...row, author: authorRow, tags };
-          res.status(200).json(postDetails);
-        });
-      } else {
-        res.status(404).send('Post no encontrado');
-      }
+            db.get(selectAuthorQuery, [row.author], (err, authorRow) => {
+                if (err) {
+                    console.error('Error al obtener el autor:', err);
+                    return res.status(500).send('Error al obtener el autor');
+                }
+                const postDetails = { ...row, author: authorRow, tags };
+                res.status(200).json(postDetails);
+            });
+        } else {
+            res.status(404).send('Post no encontrado');
+        }
     });
-  });
+});
 
 // Endpoint para crear un nuevo comentario en un post.
 router.post('/:postId/comments', async (req, res) => {
@@ -130,6 +130,5 @@ router.get('/:postId/comments', (req, res) => {
         res.status(200).json(comments);
     });
 });
-
 
 module.exports = router;

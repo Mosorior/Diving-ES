@@ -26,7 +26,7 @@ const Foro = () => {
 
     useEffect(() => {
         const cargarPosts = async () => {
-            let url = 'http://localhost:3001/api/posts';
+            let url = `${process.env.REACT_APP_API_URL}/api/posts`;
             // Modifica la URL si se especifica una etiqueta en la ruta
             if (etiqueta) {
                 url += `?tag=${etiqueta}`; // Modifica según cómo tu backend espera recibir la etiqueta

@@ -13,17 +13,32 @@ function Navbar() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
 
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [showLoginForm, setShowLoginForm] = useState(false);
+  const [showRegisterForm, setShowRegisterForm] = useState(false);
 
-  const handleOpenLoginModal = () => {
-    setShowLoginModal(true);
-    setShowRegisterModal(false);
+  const toggleModal = (modalType) => {
+    if (modalType === 'login') {
+      setShowLoginForm(true);
+      setShowRegisterForm(false);
+    } else if (modalType === 'register') {
+      setShowLoginForm(false);
+      setShowRegisterForm(true);
+    }
   };
 
   const handleCloseModal = () => {
-    setShowLoginModal(false);
-    setShowRegisterModal(false);
+    setShowLoginForm(false);
+    setShowRegisterForm(false);
+  };
+
+  const handleOpenLoginModal = () => {
+    setShowLoginForm(true);
+    setShowRegisterForm(false);
+  };
+
+  const handleOpenRegisterModal = () => {
+    setShowRegisterForm(true);
+    setShowLoginForm(false);
   };
 
   const handleLinkClick = (path) => {
@@ -56,7 +71,7 @@ function Navbar() {
   return (
     <>
       <nav className="NavContainer">
-      <div className={`menu-bg ${clicked ? 'active' : ''}`}></div>
+        <div className={`menu-bg ${clicked ? 'active' : ''}`}></div>
         <h2 className='Logo' onClick={() => handleLinkClick('/')}>
           Diving<b>ES</b>
         </h2>
@@ -71,7 +86,7 @@ function Navbar() {
           </div>
           {user ? (
             <div className="user-profile" ref={dropdownRef}>
-              <img src={`http://localhost:3001/uploads/${user.username}/profile-img/profile.jpeg`} alt="Perfil" className="profile-image" onClick={toggleMenuVisibility} />
+              <img src={`${process.env.REACT_APP_API_URL}/uploads/${user.username}/profile-img/profile.jpeg`} alt="Perfil" className="profile-image" onClick={toggleMenuVisibility} />
               {isDropdownVisible && (
                 <div className="dropdown-menu">
                   <div onClick={handleLogoutClick} className="dropdown-item">Cerrar Sesión</div>
@@ -79,17 +94,17 @@ function Navbar() {
               )}
             </div>
           ) : (
-            <div className="login-button" onClick={handleOpenLoginModal}>
-              <i className="fas fa-sign-in-alt"></i>
-            </div>
+              <div className="login-button" onClick={handleOpenLoginModal}>
+                <i className="fas fa-sign-in-alt"></i>
+              </div>
           )}
         </div>
         <div className='burger'>
           <BurgerButton clicked={clicked} handleClick={() => setClicked(!clicked)} />
         </div>
       </nav>
-      {showLoginModal && <LoginForm onClose={handleCloseModal} />}
-      {showRegisterModal && <RegisterForm onClose={handleCloseModal} />}
+      {showLoginForm && <LoginForm onClose={handleCloseModal} toggleModal={toggleModal} />}
+      {showRegisterForm && <RegisterForm onClose={handleCloseModal} toggleModal={toggleModal} />}
     </>
   );
 }

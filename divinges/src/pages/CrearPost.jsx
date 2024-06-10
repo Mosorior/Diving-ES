@@ -11,7 +11,6 @@ function CrearPost() {
     const [titulo, setTitulo] = useState('');
     const [tags, setTags] = useState('general');
     const simpleMdeRef = useRef(null);
-    //const [imagenes, setImagenes] = useState([]);
     const mdeRef = useRef(null);
     const navigate = useNavigate();
     const { user } = useAuth(); // Usar useAuth para acceder al usuario actual y al token
@@ -54,7 +53,7 @@ function CrearPost() {
         };
     
         try {
-            const res = await fetch('http://localhost:3001/api/posts/crearpost', {
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/api/posts/crearpost`, {
                 method: 'POST',
                 body: JSON.stringify(postData),
                 headers: {
@@ -91,7 +90,7 @@ function CrearPost() {
                     <textarea id="mde" ref={mdeRef}></textarea>
                 </div>
                 <div>
-                     <label>Tags:</label>
+                    <label>Tags:</label>
                     <select className="tag-select" name="tags" value={tags} onChange={(e) => setTags(e.target.value)}>
                         <option value="general">General</option>
                         <option value="conservacion">Conservación</option>

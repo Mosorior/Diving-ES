@@ -13,7 +13,7 @@ const PostDetails = () => {
 
   useEffect(() => {
     const fetchPost = async () => {
-      const response = await fetch(`http://localhost:3001/api/posts/${postId}`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/posts/${postId}`);
       if (!response.ok) {
         console.error('Error fetching post:', response.statusText);
         return;
@@ -29,7 +29,7 @@ const PostDetails = () => {
 
   // Función para obtener los comentarios
   const fetchComments = async () => {
-    const response = await fetch(`http://localhost:3001/api/posts/${postId}/comments`);
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/posts/${postId}/comments`);
     if (!response.ok) {
       console.error('Error fetching comments:', response.statusText);
       return;

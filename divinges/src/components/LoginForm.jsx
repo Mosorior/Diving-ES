@@ -11,19 +11,35 @@ const LoginForm = ({ onClose, toggleModal }) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await fetch('http://localhost:3001/login', {
+            const apiUrl = `${process.env.REACT_APP_API_URL}/api/users/login`; // URL ajustada
+            console.log(`Making request to: ${apiUrl}`);
+
+            const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ username, password }),
             });
-    
+
+            const contentType = response.headers.get('Content-Type');
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Error al iniciar sesión');
+                if (contentType && contentType.includes('application/json')) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Error al iniciar sesión');
+                } else {
+                    const errorText = await response.text();
+                    console.error('Server error response:', errorText);
+                    throw new Error('Error al iniciar sesión, respuesta inesperada del servidor');
+                }
             }
-    
+
+            if (!contentType || !contentType.includes('application/json')) {
+                const errorText = await response.text();
+                console.error('Unexpected server response:', errorText);
+                throw new Error('Respuesta inesperada del servidor');
+            }
+
             const data = await response.json();
             localStorage.setItem('token', data.token);
             // Aquí, asegúrate de que la función login maneje adecuadamente los datos del usuario,
@@ -34,6 +50,7 @@ const LoginForm = ({ onClose, toggleModal }) => {
 
             onClose(); // Cierra el modal después de un inicio de sesión exitoso
         } catch (error) {
+            console.error('Login error:', error);
             setError(error.message);
         }
     };
@@ -44,7 +61,6 @@ const LoginForm = ({ onClose, toggleModal }) => {
                 {error && <p className="error">{error}</p>}
                 <h2>Iniciar Sesión</h2>
                 <form onSubmit={handleSubmit}>
-                    
                     <div className="form-group">
                         <label htmlFor="username">Nombre de Usuario:</label>
                         <input
