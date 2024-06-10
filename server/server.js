@@ -41,7 +41,6 @@ app.listen(port, () => {
 
 
 /*
-
 AWS
 
 const express = require('express');
