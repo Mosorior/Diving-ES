@@ -84,7 +84,7 @@ const Foro = () => {
                                 <span className="post-tag">{post.tags}</span>
                                 <div className="post-title-author">
                                     <h3 className="post-title">{post.title}</h3>
-                                    <p className="post-author">{post.author.username || 'Anónimo'}</p>
+                                    <p className="post-author">{post.author?.username || ''}</p>
                                 </div>
                             </div>
                             <div className="post-preview" dangerouslySetInnerHTML={{

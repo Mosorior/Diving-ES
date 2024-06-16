@@ -4,10 +4,12 @@ import AddComment from '../components/Comments/AddComment';
 import Navbar from '../components/Navigation/Navbar';
 import DOMPurify from 'dompurify';
 import { marked } from 'marked';
+import { useAuth } from '../components/AuthContext'; // Asegúrate de que esta ruta es correcta
 import '../style/PostDetails.css';
 
 const PostDetails = () => {
   const { postId } = useParams();
+  const { user } = useAuth(); // Obtén el usuario desde el contexto
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
 
@@ -72,7 +74,11 @@ const PostDetails = () => {
           </div>
         ))}
 
-        <AddComment postId={postId} onCommentAdded={fetchComments} />
+        {user ? (
+          <AddComment postId={postId} onCommentAdded={fetchComments} />
+        ) : (
+          <p>Por favor, inicia sesión para añadir un comentario.</p>
+        )}
       </div>
     </div>
   );

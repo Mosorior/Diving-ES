@@ -23,7 +23,7 @@ const CommentForm = ({ postId, onCommentPosted }) => {
     }
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/posts/${postId}/comments`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/posts/${postId}/comments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
