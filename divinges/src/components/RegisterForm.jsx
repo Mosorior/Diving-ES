@@ -58,7 +58,7 @@ const RegisterForm = ({ onClose, toggleModal }) => {
                 <h2>Registrarse</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label htmlFor="username">Nombre de Usuario:</label>
+                        <label htmlFor="username" className="label">Nombre de Usuario:</label>
                         <input
                             type="text"
                             id="username"
@@ -68,7 +68,7 @@ const RegisterForm = ({ onClose, toggleModal }) => {
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="email">Correo Electrónico:</label>
+                        <label htmlFor="email" className="label">Correo Electrónico:</label>
                         <input
                             type="email"
                             id="email"
@@ -78,7 +78,7 @@ const RegisterForm = ({ onClose, toggleModal }) => {
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="password">Contraseña:</label>
+                        <label htmlFor="password" className="label">Contraseña:</label>
                         <input
                             type="password"
                             id="password"

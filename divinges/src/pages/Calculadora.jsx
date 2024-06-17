@@ -82,7 +82,6 @@ const Calculadora = () => {
         const segundos = Math.round((tiempoDecimal - minutos) * 60);
         return `${minutos}min${segundos !== 0 ? ` ${segundos}s` : ''}`;
       };
-      
 
     return (
         <div>
