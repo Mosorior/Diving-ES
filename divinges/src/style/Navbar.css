@@ -150,7 +150,7 @@ a {
 }
 
 .links ul {
-    display: flex;
+    display: contents;
     justify-content: space-between;
     width: 100%;
 }
