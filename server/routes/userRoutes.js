@@ -4,12 +4,11 @@ const jwt = require('jsonwebtoken');
 const sharp = require('sharp');
 const path = require('path');
 const fs = require('fs');
-const db = require('../config/db'); // Asegúrate de que la ruta sea correcta para tu estructura de proyecto
-const multer = require('multer');
+const db = require('../config/db');
 
 const router = express.Router();
 const saltRounds = 10;
-const JWT_SECRET = 'hYfTmtt9jvfH*tsWRHo8A*ArtD@z#8PKp!qZJK&Y#VTtZP8Y^c';
+const JWT_SECRET = process.env.JWT_SECRET_KEY;
 
 // Función auxiliar para crear carpetas si no existen
 const createFolder = (folder) => {
@@ -17,23 +16,6 @@ const createFolder = (folder) => {
         fs.mkdirSync(folder, { recursive: true });
     }
 };
-
-// Configuración de multer para manejar la subida de imágenes
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        const username = req.body.username;
-        if (!username) {
-            return cb(new Error('Nombre de usuario no proporcionado'));
-        }
-        const folder = path.join(__dirname, '..', 'uploads', username, 'profile-img');
-        createFolder(folder);
-        cb(null, folder);
-    },
-    filename: (req, file, cb) => {
-        cb(null, 'profile.jpg'); // Nombre fijo para simplificar, considera añadir lógica para nombres únicos si es necesario
-    }
-});
-const upload = multer({ storage: storage });
 
 // Endpoint para registrar un nuevo usuario
 router.post('/register', upload.single('profileImage'), async (req, res) => {

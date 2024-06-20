@@ -1,4 +1,5 @@
-const http = require('http'); // Cambiado de https a http
+const https = require('https');
+const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -17,9 +18,17 @@ app.use('/uploads', express.static('uploads'));
 app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
 
-// Configuración de HTTP
-const httpServer = http.createServer(app);
+// Configuración de HTTPS con Certbot
+const privateKeyPath = '/etc/letsencrypt/live/diving.com.es/privkey.pem';
+const certificatePath = '/etc/letsencrypt/live/diving.com.es/fullchain.pem';
 
-httpServer.listen(port, () => {
-  console.log(`Servidor Node.js corriendo en http://localhost:${port}`);
+const credentials = {
+  key: fs.readFileSync(privateKeyPath, 'utf8'),
+  cert: fs.readFileSync(certificatePath, 'utf8')
+};
+
+const httpsServer = https.createServer(credentials, app);
+
+httpsServer.listen(port, () => {
+  console.log(`Servidor Node.js corriendo en https://localhost:${port}`);
 });
